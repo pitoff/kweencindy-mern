@@ -5,8 +5,10 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const dotenv = require('dotenv').config()
 
-const v1BookingRoute = require('./v1/routes/bookingRoutes')
 const v1AuthRoute = require('./v1/routes/authRoutes')
+const v1UserRoute = require('./v1/routes/userRoutes')
+const v1BookingRoute = require('./v1/routes/bookingRoutes')
+const v1CategoryRoute = require('./v1/routes/categoryRoutes')
 
 const { swaggerDocs: v1SwaggerDocs } = require('./swagger')
 
@@ -26,6 +28,8 @@ app.use(express.urlencoded({extended:true}))
 //routes
 app.use("/api/v1/", v1AuthRoute)
 app.use("/api/v1/bookings", v1BookingRoute)
+app.use("/api/v1/users", v1UserRoute)
+app.use("/api/v1/category", v1CategoryRoute)
 
 const PORT = process.env.PORT || 5000;
 

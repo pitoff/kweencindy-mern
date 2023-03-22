@@ -8,8 +8,10 @@ const options = {
         info: { title: "Kweencindy Booking App API", version: "1.0.0" }
     },
     apis: [
-        ".v1/routes/authRoutes.js",
-        ".v1/routes/bookingRoutes.js"
+        "./v1/routes/authRoutes.js",
+        "./v1/routes/userRoutes.js",
+        "./v1/routes/bookingRoutes.js",
+        "./v1/routes/categoryRoutes.js"
     ]
 };
 
@@ -30,6 +32,4 @@ const swaggerDocs = (app, port) => {
     )
 }
 
-module.exports = {
-    swaggerDocs
-}
+module.exports = { swaggerDocs }
