@@ -26,5 +26,7 @@ const router = Router()
  */
 router.post('/sign-up', authController.signUp)
 router.post('/login', authController.login)
+router.get('/verify-user', authController.verifyAuth)
+router.post('/logout', authController.logout)
 
 module.exports = router

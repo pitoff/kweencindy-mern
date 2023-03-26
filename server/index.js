@@ -3,6 +3,7 @@ const app = express()
 const http = require('http').createServer(app)
 const mongoose = require('mongoose')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 const dotenv = require('dotenv').config()
 
 const v1AuthRoute = require('./v1/routes/authRoutes')
@@ -18,6 +19,7 @@ const corsOptions = {
     optionSuccessStatus: 200
 }
 
+app.use(cookieParser())
 //to avoid invalid cors errors
 app.use(cors(corsOptions))
 //accepts requests as json

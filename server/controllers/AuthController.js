@@ -5,22 +5,22 @@ const ResponseHelper = require('../helpers/ResponseHelper')
 const response = new ResponseHelper()
 const jwt = require('jsonwebtoken')
 const maxAge = 60
-const createJwt = id => {
+const createJWT = id => {
     return jwt.sign({id}, 'user token', {expiresIn:maxAge})
 }
 
 module.exports.signUp = async(req, res) => {
-    const { fullname, email, phone, address, password } = req.body
-    if(!fullname || !email || !phone || !address || !password){
+    const { firstname, lastname, email, phone, password } = req.body
+    if(!firstname || !lastname || !email || !phone || !password){
        return res.status(400).send(response.failure('Please check your required fields!'))
     }
 
     try {
-        const user = await User.create({fullname, email, phone, address, password})
-        const token = createJwt(user._id)
+        const user = await User.create({fullname:lastname + ' ' + firstname, email, phone, password})
+        const token = createJWT(user._id)
         //send token to cookie response
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
-        return res.status(201).send(response.success('user created', user))
+        res.status(201).send(response.success('Thank you for creating an account', {user: user, accessToken: token}))
     } catch (error) {
         console.log(error)
         let err = Object.keys(error.keyValue)
@@ -44,9 +44,9 @@ module.exports.login = async(req, res) => {
             if(!isAuthenticated){
                 return res.status(400).send(response.failure('You have provided incorrect credentials'))
             }
-            const token = createJwt(user._id)
+            const token = createJWT(user._id)
             res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
-            return res.status(201).send(response.success('user logged in successfully', user))
+            return res.status(201).send(response.success('user logged in successfully', {user: user, accessToken: token}))
         } catch (error) {
             console.log(error)
         }
@@ -55,6 +55,25 @@ module.exports.login = async(req, res) => {
         return res.status(400).send(response.failure('You have provided incorrect credentials'))
     }
 
+}
+
+module.exports.verifyAuth = async(req, res, next) => {
+    const token = req.cookies.jwt
+    if(token){
+        jwt.verify(token, 'user token', async(err, decodedToken) => {
+            console.log("token decoded is", decodedToken)
+            if(err){
+                console.log("my error", err.message)
+                return res.status(401).send(response.failure('Token mismatch'))
+            }else{
+                let user = await User.findById(decodedToken.id)
+                return res.status(200).send(response.success('current user', user))
+            }
+        })
+    }else{
+        // next()
+        return res.status(401).send(response.failure('User Unauthorized'))
+    }
 }
 
 module.exports.logout = (req, res) => {

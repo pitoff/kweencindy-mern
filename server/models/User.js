@@ -26,10 +26,6 @@ const UserSchema = new mongoose.Schema({
         unique: true,
         required:true,
     },
-    address:{
-        type:String,
-        required:true,
-    },
     password:{
         type:String,
         required:true,

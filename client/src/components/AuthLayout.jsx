@@ -1,7 +1,14 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, Navigate } from 'react-router-dom'
+import { useStateContext } from '../Context/ContextProvider'
 
 const AuthLayout = () => {
+  const { currentUser, setCurrentUser, userToken, setUserToken} = useStateContext()
+
+  if(userToken) {
+    return <Navigate to="/dashboard" />
+  }
+
   return (
     <>
       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -9,7 +16,7 @@ const AuthLayout = () => {
           <div>
             <img
               className="mx-auto h-12 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              // src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
               alt={`${import.meta.env.VITE_APP_NAME}`}
             />
 

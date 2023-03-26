@@ -28,7 +28,7 @@ const swaggerDocs = (app, port) => {
         res.send(swaggerSpec)
     });
     console.log(
-        `Version 1 Docs are available on http://localhost:${port}/api/v1/docs`
+        `Version 1 Docs are available on http://127.0.0.1:${port}/api/v1/docs`
     )
 }
 

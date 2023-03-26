@@ -6,6 +6,8 @@ import GuestLayout from "./components/GuestLayout";
 import Login from "./views/auth/Login";
 import Signup from "./views/auth/Signup";
 import Dashboard from "./views/Dashboard";
+import Booking from "./views/booking/Booking";
+import Category from "./views/category/Category";
 
 
 const router = createBrowserRouter([
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
             {
                 path: '/dashboard',
                 element: <Dashboard />
+            },
+            {
+                path: '/booking',
+                element: <Booking />
+            },
+            {
+                path: '/category',
+                element: <Category />
             }
         ]
     },
