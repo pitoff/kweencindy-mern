@@ -5,6 +5,7 @@ import router from './router.jsx'
 import './index.css'
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import "react-data-table-component-extensions/dist/index.css";
 import { ContextProvider } from './Context/ContextProvider.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -36,7 +36,7 @@ const DashboardLayout = () => {
   const verifyAuth = async() => {
         await axiosInstance.get('/verify-user')
         .then((res) => {
-            console.log("user data", res.data.data)
+            // console.log("user data", res.data.data)
             setCurrentUser(res.data.data)
         }).catch((err) => {
             console.log(err)

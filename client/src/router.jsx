@@ -8,6 +8,8 @@ import Signup from "./views/auth/Signup";
 import Dashboard from "./views/Dashboard";
 import Booking from "./views/booking/Booking";
 import Category from "./views/category/Category";
+import CreateCategory from "./views/category/CreateCategory";
+import CreateBooking from "./views/booking/CreateBooking";
 
 
 const router = createBrowserRouter([
@@ -39,8 +41,16 @@ const router = createBrowserRouter([
                 element: <Booking />
             },
             {
+                path: '/booking/create',
+                element: <CreateBooking />
+            },
+            {
                 path: '/category',
                 element: <Category />
+            },
+            {
+                path: '/category/create',
+                element: <CreateCategory />
             }
         ]
     },

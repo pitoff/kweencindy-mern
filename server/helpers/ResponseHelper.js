@@ -1,6 +1,6 @@
 class ResponseHelper {
     
-    success(message = null, data = ['']) {
+    success(message = null, data = {}) {
 
         return ({
             status: 'OK',

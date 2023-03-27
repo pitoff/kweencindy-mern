@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const ResponseHelper = require('../helpers/ResponseHelper')
 const response = new ResponseHelper()
 const jwt = require('jsonwebtoken')
-const maxAge = 60
+const maxAge = 24 * 60 * 60
 const createJWT = id => {
     return jwt.sign({id}, 'user token', {expiresIn:maxAge})
 }
@@ -61,7 +61,7 @@ module.exports.verifyAuth = async(req, res, next) => {
     const token = req.cookies.jwt
     if(token){
         jwt.verify(token, 'user token', async(err, decodedToken) => {
-            console.log("token decoded is", decodedToken)
+            // console.log("token decoded is", decodedToken)
             if(err){
                 console.log("my error", err.message)
                 return res.status(401).send(response.failure('Token mismatch'))

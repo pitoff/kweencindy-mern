@@ -18,7 +18,7 @@ const Login = () => {
             setUserToken(res.data.data.accessToken)
             navigate('/dashboard')
         }).catch((err) => {
-            toast.error(err.response.data)
+            toast.error(err.response.data.message)
         })
     }
 
