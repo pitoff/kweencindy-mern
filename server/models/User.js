@@ -8,7 +8,7 @@ const roles = {
 
 const UserSchema = new mongoose.Schema({
     role:{
-        type:String,
+        type:[],
         required:true,
         default: roles.DEFAULT
     },

@@ -15,6 +15,7 @@ axiosInstance.interceptors.response.use(response => {
 }, error => {
     if(error.response && error.response.status === 401){
         localStorage.removeItem('TOKEN')
+        localStorage.removeItem('User')
         window.location.reload()
         return error;
     }

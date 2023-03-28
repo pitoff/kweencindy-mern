@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { LockClosedIcon } from "@heroicons/react/20/solid"
 import axiosInstance from '../../axios'
 import { useStateContext } from '../../Context/ContextProvider'
@@ -8,15 +8,20 @@ import { toast } from "react-toastify";
 const Login = () => {
     const { setCurrentUser, setUserToken } = useStateContext()
     const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || "/dashboard"
+
     const [authCredentials, setAuthCredentials] = useState({ email: '', password: '' })
 
     const loginUser = async(e) => {
         e.preventDefault()
         await axiosInstance.post('/login', authCredentials)
         .then((res) => {
+            console.log("login response", res.data.data.user)
             setCurrentUser(res.data.data.user)
             setUserToken(res.data.data.accessToken)
-            navigate('/dashboard')
+            navigate(from, {replace: true})
+            // navigate('/dashboard')
         }).catch((err) => {
             toast.error(err.response.data.message)
         })

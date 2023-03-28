@@ -3,7 +3,7 @@ class ResponseHelper {
     success(message = null, data = {}) {
 
         return ({
-            status: 'OK',
+            status: "OK",
             data: data,
             message: message
         })
@@ -11,7 +11,7 @@ class ResponseHelper {
 
     failure(message = null) {
         return ({
-            status: 'FAILURE',
+            status: "FAILURE",
             message: message
         })
     }

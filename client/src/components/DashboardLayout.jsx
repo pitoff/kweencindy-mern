@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect} from 'react'
+import React, { Fragment, useEffect, } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Navigate, NavLink, Outlet } from 'react-router-dom'
@@ -6,9 +6,9 @@ import { useStateContext } from '../Context/ContextProvider'
 import axiosInstance from '../axios'
 
 const navigation = [
-  { name: 'Dashboard', to:'/' },
-  { name: 'Booking', to:'/booking' },
-  { name: 'Category', to:'/category' },
+  { name: 'Dashboard', to: '/dashboard' },
+  { name: 'Booking', to: '/booking' },
+  { name: 'Category', to: '/category' },
 ]
 
 function classNames(...classes) {
@@ -16,36 +16,36 @@ function classNames(...classes) {
 }
 
 const DashboardLayout = () => {
-  const { currentUser, setCurrentUser, userToken, setUserToken} = useStateContext()
-
-  if(!userToken) {
-    return <Navigate to="/login" />
+  const { currentUser, setCurrentUser, userToken, setUserToken } = useStateContext()
+  const user = JSON.parse(currentUser)
+  if (!userToken) {
+    return <Navigate to={"/login"} />
   }
 
-  const logout = (e) =>{
+  const logout = (e) => {
     e.preventDefault()
     axiosInstance.post('/logout')
-    .then((res) => {
-      setCurrentUser({})
-      setUserToken(null)
-    }).catch(() => {
+      .then(() => {
+        setCurrentUser({})
+        setUserToken(null)
+      }).catch(() => {
 
-    })
+      })
   }
 
-  const verifyAuth = async() => {
-        await axiosInstance.get('/verify-user')
-        .then((res) => {
-            // console.log("user data", res.data.data)
-            setCurrentUser(res.data.data)
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
+  const verifyAuth = async () => {
+    await axiosInstance.get('/verify-user')
+      .then((res) => {
+        // console.log("user data", res.data.data.user)
+        setCurrentUser(res.data.data.user)
+      }).catch((err) => {
+        console.log(err)
+      })
+  }
 
-    useEffect(() => {
-        verifyAuth()
-    }, [])
+  useEffect(() => {
+    verifyAuth()
+  }, [])
 
   return (
     <>
@@ -69,7 +69,7 @@ const DashboardLayout = () => {
                           <NavLink
                             key={item.name}
                             to={item.to}
-                            className={({isActive}) => classNames(
+                            className={({ isActive }) => classNames(
                               isActive
                                 ? 'bg-gray-900 text-white'
                                 : 'text-gray-300 hover:bg-gray-700 hover:text-white',
@@ -104,19 +104,19 @@ const DashboardLayout = () => {
                           leaveTo="transform opacity-0 scale-95"
                         >
                           <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            
-                              <Menu.Item>
-                                
-                                  <a
-                                    href="#"
-                                    onClick={(e) => logout(e)}
-                                    className={'block px-4 py-2 text-sm text-gray-700'}
-                                  >
-                                    Sign out
-                                  </a>
-                              
-                              </Menu.Item>
-                           
+
+                            <Menu.Item>
+
+                              <a
+                                href="#"
+                                onClick={(e) => logout(e)}
+                                className={'block px-4 py-2 text-sm text-gray-700'}
+                              >
+                                Sign out
+                              </a>
+
+                            </Menu.Item>
+
                           </Menu.Items>
                         </Transition>
                       </Menu>
@@ -158,8 +158,8 @@ const DashboardLayout = () => {
                       {/* <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" /> */}
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium leading-none text-white">{currentUser.fullname}</div>
-                      <div className="text-sm font-medium leading-none text-gray-400">{currentUser.email}</div>
+                      <div className="text-base font-medium leading-none text-white">{user.fullname}</div>
+                      <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
                     </div>
                     {/* <button
                       type="button"
@@ -170,16 +170,16 @@ const DashboardLayout = () => {
                     </button> */}
                   </div>
                   <div className="mt-3 space-y-1 px-2">
-                    
-                      <Disclosure.Button
-                        as="a"
-                        href="#"
-                        onClick={(e) => logout(e)}
-                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                      >
-                        Sign out
-                      </Disclosure.Button>
-                    
+
+                    <Disclosure.Button
+                      as="a"
+                      href="#"
+                      onClick={(e) => logout(e)}
+                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                    >
+                      Sign out
+                    </Disclosure.Button>
+
                   </div>
                 </div>
               </Disclosure.Panel>

@@ -6,7 +6,7 @@ const AuthLayout = () => {
   const { currentUser, setCurrentUser, userToken, setUserToken} = useStateContext()
 
   if(userToken) {
-    return <Navigate to="/dashboard" />
+    return <Navigate to="/" />
   }
 
   return (

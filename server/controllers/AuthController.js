@@ -20,7 +20,7 @@ module.exports.signUp = async(req, res) => {
         const token = createJWT(user._id)
         //send token to cookie response
         res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
-        res.status(201).send(response.success('Thank you for creating an account', {user: user, accessToken: token}))
+        res.status(201).send(response.success('Thank you for creating an account', {user: user, accessToken: token }))
     } catch (error) {
         console.log(error)
         let err = Object.keys(error.keyValue)
@@ -46,7 +46,7 @@ module.exports.login = async(req, res) => {
             }
             const token = createJWT(user._id)
             res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
-            return res.status(201).send(response.success('user logged in successfully', {user: user, accessToken: token}))
+            return res.status(201).send(response.success('user logged in successfully', {user: user, accessToken: token }))
         } catch (error) {
             console.log(error)
         }
@@ -67,7 +67,7 @@ module.exports.verifyAuth = async(req, res, next) => {
                 return res.status(401).send(response.failure('Token mismatch'))
             }else{
                 let user = await User.findById(decodedToken.id)
-                return res.status(200).send(response.success('current user', user))
+                return res.status(200).send(response.success('current user', {user: user, accessToken: token}))
             }
         })
     }else{
