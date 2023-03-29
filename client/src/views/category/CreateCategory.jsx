@@ -1,11 +1,55 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { UserIcon } from "@heroicons/react/20/solid"
 import { toast } from "react-toastify";
 import axiosInstance from '../../axios';
 import { ListBulletIcon, UserCircleIcon, PhotoIcon } from "@heroicons/react/20/solid"
 
 const CreateCategory = () => {
+    const [category, setCategory] = useState({name: '', description: '', price: ''})
+    const navigate = useNavigate()
+    const {categoryId} = useParams()
+    // console.log("cat Id", categoryId)
+
+    const saveCategory = async(e) => {
+        e.preventDefault()
+        // console.log("category to create", category)
+        // let res = null
+        if(categoryId){
+            await axiosInstance.put(`/category/${categoryId}`, category)
+            .then((res) => {
+                console.log(res.data.data)
+                toast.success(res.data.message)
+                navigate('/category')
+            }).catch((err) => {
+                console.log(err)
+                // toast.error(err.response.data.message)
+            })
+        }else{
+            await axiosInstance.post('/category/create', category)
+            .then((res) => {
+                console.log(res.data.data)
+                toast.success(res.data.message)
+                navigate('/category')
+            }).catch((err) => {
+                console.log(err)
+                // toast.error(err.response.data.message)
+            })
+        }
+        
+    }
+
+    useEffect(() => {
+        if(categoryId){
+            axiosInstance.get(`/category/${categoryId}`)
+            .then(({data}) => {
+                setCategory({name:data.data.category, description:data.data.description, price:data.data.price})
+            }).catch((err) => {
+                console.log(err)
+                toast.error(err.response.data.message)
+            })
+        }
+    }, [])
 
     return (
         <>
@@ -39,7 +83,7 @@ const CreateCategory = () => {
                     </Link>
                 </div>
 
-                <form>
+                <form onSubmit={saveCategory}>
                     <div className="space-y-12">
                         <div className="border-b border-gray-900/10 pb-12">
                             <h2 className="text-base font-semibold leading-7 text-gray-900">New make up category</h2>
@@ -53,8 +97,10 @@ const CreateCategory = () => {
                                         <input
                                             type="text"
                                             name="first-name"
+                                            required
+                                            value={category.name}
+                                            onChange={(e) => {setCategory({...category, name:e.target.value})}}
                                             id="first-name"
-                                            autoComplete="given-name"
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
                                     </div>
@@ -71,6 +117,9 @@ const CreateCategory = () => {
                                         <input
                                             type="text"
                                             name="price"
+                                            required
+                                            value={category.price}
+                                            onChange={(e) => {setCategory({...category, price:e.target.value})}}
                                             id="price"
                                             className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                             placeholder="0.00"
@@ -87,9 +136,11 @@ const CreateCategory = () => {
                                         <textarea
                                             id="about"
                                             name="about"
+                                            required
+                                            value={category.description}
+                                            onChange={(e) => {setCategory({...category, description:e.target.value})}}
                                             rows={2}
                                             className="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:py-1.5 sm:text-sm sm:leading-6"
-                                            defaultValue={''}
                                         />
                                     </div>
                                     <p className="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about this category.</p>

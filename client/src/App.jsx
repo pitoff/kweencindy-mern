@@ -13,6 +13,10 @@ import CreateCategory from "./views/category/CreateCategory";
 import CreateBooking from "./views/booking/CreateBooking";
 import Unauthorized from './views/auth/Unauthorized';
 import RequireAuth from './components/RequireAuth';
+import PaymentMethod from './views/payment/PaymentMethod';
+import CreatePaymentMethod from './views/payment/CreatePaymentMethod';
+import Gallery from './views/gallery/Gallery';
+import CreateImage from './views/gallery/CreateImage';
 
 function App() {
 
@@ -26,15 +30,20 @@ function App() {
         </Route>
 
         <Route element={<DashboardLayout/>}>
-          <Route element={<RequireAuth allowedRoles={['default', 'admin']}/>}>
+          <Route element={<RequireAuth allowedRoles={['admin', 'dafault']}/>}>
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/booking' element={<Booking />} />
             <Route path='/booking/create' element={<CreateBooking />} />
+            <Route path='/gallery' element={<Gallery />} />
           </Route>
           
           <Route element={<RequireAuth allowedRoles={['admin']}/>}>
             <Route path='/category' element={<Category />} />
             <Route path='/category/create' element={<CreateCategory />} />
+            <Route path='/category/create/:categoryId' element={<CreateCategory />} />
+            <Route path='/payment-method' element={<PaymentMethod />}/>
+            <Route path='/payment-method/create' element={<CreatePaymentMethod />}/>
+            <Route path='/gallery/create' element={<CreateImage />} />
           </Route>
 
           <Route path='unauthorized' element={<Unauthorized />} />

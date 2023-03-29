@@ -3,6 +3,7 @@ const router = Router()
 const categoryController = require('../../controllers/CategoryController')
 
 router.get('/', categoryController.categories)
+router.get('/:categoryId', categoryController.category)
 router.post('/create', categoryController.create)
 router.put('/:categoryId', categoryController.update)
 router.delete('/:categoryId', categoryController.destroy)

@@ -15,10 +15,13 @@ module.exports.categories = async(req, res) => {
 }
 
 module.exports.create = async(req, res) => {
-    const { category, description, price } = req.body
-
+    const { name, description, price } = req.body
+    if(!name || !description || !price){
+        return res.status(400).send(response.failure('Please check required field'))
+    }
+    //validate for wrong price format
     try {
-        const storeCategory = await Category.create({category, description, price})
+        const storeCategory = await Category.create({category:name, description, price})
         return res.status(201).send(response.success('category created successfully', storeCategory))
     } catch (error) {
         console.log(error)
@@ -26,8 +29,35 @@ module.exports.create = async(req, res) => {
     }
 }
 
-module.exports.update = async(req, res) => {
+module.exports.category = async(req, res) => {
+    const { categoryId } = req.params
+    if(!mongoose.Types.ObjectId.isValid(categoryId)){
+        return res.status(400).send(response.failure('resource not found'))
+    }
+    try {
+        const category = await Category.findById(categoryId)
+        return res.status(201).send(response.success('category', category))
+    } catch (error) {
+        console.log(error)
+    }
+}
 
+module.exports.update = async(req, res) => {
+    const { categoryId } = req.params
+    const { name, description, price } = req.body
+    if(!mongoose.Types.ObjectId.isValid(categoryId)){
+        return res.status(400).send(response.failure('resource not found'))
+    }
+    if(!name || !description || !price){
+        return res.status(400).send(response.failure('Please check required field'))
+    }
+    try {
+        const category = { category:name, description, price }
+        await Category.findByIdAndUpdate(categoryId, category, {new: true})
+        return res.status(201).send(response.success('category updated successfully', category))
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 module.exports.destroy = async(req, res) => {
