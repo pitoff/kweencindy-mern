@@ -4,6 +4,7 @@ import { UserIcon } from "@heroicons/react/20/solid"
 import { toast } from "react-toastify";
 import axiosInstance from '../../axios';
 import { useStateContext } from '../../Context/ContextProvider';
+import 'tachyons';
 
 const Signup = () => {
     const { setCurrentUser, setUserToken } = useStateContext()
@@ -29,10 +30,12 @@ const Signup = () => {
 
     return (
         <>
-            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+      <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-m mw6 shadow-2 text-center">
+      <main className="pa2 black-80">
+            <h2 className="mt-4 text-center text-3xl font-bold tracking-tight text-gray-900">
                 Create Account
             </h2>
-            <p className="mt-2 text-center text-sm text-gray-600">
+            <p className="mt-3 text-center text-sm f1 fw4 text-gray-600">
                 Have Account? {' '}
                 <Link to="/login"
                     className="font-medium text-indigo-600 hover:text-indigo-500">
@@ -40,10 +43,9 @@ const Signup = () => {
                 </Link>
             </p>
             
-            <form className="mt-8 space-y-6" onSubmit={saveUser}>
-                {/* <input type="hidden" name="remember" defaultValue="true" /> */}
+            <form className="mt-8 space-y-6 " onSubmit={saveUser}>
                 <div className="-space-y-px rounded-md shadow-sm">
-                    <div className=''>
+                    <div className='br4 pa1'>
                         <label htmlFor="email-address" className="sr-only">
                             First Name
                         </label>
@@ -56,7 +58,7 @@ const Signup = () => {
                             placeholder="First Name"
                         />
                     </div>
-                    <div className=''>
+                    <div className='br3 pa1'>
                         <label htmlFor="email-address" className="sr-only">
                             Last Name
                         </label>
@@ -70,7 +72,7 @@ const Signup = () => {
                             placeholder="Last Name"
                         />
                     </div>
-                    <div className=''>
+                    <div className='br3 pa1'>
                         <label htmlFor="email-address" className="sr-only">
                             Email address
                         </label>
@@ -84,7 +86,7 @@ const Signup = () => {
                             placeholder="Email address"
                         />
                     </div>
-                    <div className=''>
+                    <div className='br3 pa1'>
                         <label htmlFor="phone" className="sr-only">
                             Phone
                         </label>
@@ -97,7 +99,7 @@ const Signup = () => {
                             placeholder="Phone Number"
                         />
                     </div>
-                    <div className=''>
+                    <div className='br3 pa1'>
                         <label htmlFor="password" className="sr-only">
                             Password
                         </label>
@@ -111,7 +113,7 @@ const Signup = () => {
                             placeholder="Password"
                         />
                     </div>
-                    <div className=''>
+                    <div className='br3 pa1'>
                         <label htmlFor="password" className="sr-only">
                             Confirm Password
                         </label>
@@ -126,21 +128,6 @@ const Signup = () => {
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                        <input
-                            id="remember-me"
-                            name="remember-me"
-                            type="checkbox"
-                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                        />
-                        <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                            Remember me
-                        </label>
-                    </div>
-
-                </div>
-
                 <div>
                     <button
                         type="submit"
@@ -153,7 +140,8 @@ const Signup = () => {
                     </button>
                 </div>
             </form>
-
+            </main>
+         </article>
         </>
     )
 }
