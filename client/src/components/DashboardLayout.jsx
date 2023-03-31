@@ -17,7 +17,10 @@ function classNames(...classes) {
 
 const DashboardLayout = () => {
   const { currentUser, setCurrentUser, userToken, setUserToken } = useStateContext()
-  const user = JSON.parse(currentUser)
+  let user = ''
+  if(currentUser){
+    user = JSON.parse(currentUser)
+  }
   if (!userToken) {
     return <Navigate to={"/login"} />
   }
