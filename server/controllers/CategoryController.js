@@ -61,5 +61,14 @@ module.exports.update = async(req, res) => {
 }
 
 module.exports.destroy = async(req, res) => {
-
+    const { categoryId } = req.params
+    if(!mongoose.Types.ObjectId.isValid(categoryId)){
+        return res.status(400).send(response.failure('resource not found'))
+    }
+    try {
+        await Category.findByIdAndRemove(categoryId)
+        return res.status(201).send(response.success('category removed successfully'))
+    } catch (error) {
+        console.log(error)
+    }
 }
