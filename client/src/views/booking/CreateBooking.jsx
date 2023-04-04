@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { UserIcon } from "@heroicons/react/20/solid"
 import { toast } from "react-toastify";
 import axiosInstance from '../../axios';
 import { ListBulletIcon, UserCircleIcon, PhotoIcon } from "@heroicons/react/20/solid"
-import { Listbox, Transition } from '@headlessui/react'
 import { useStateContext } from '../../Context/ContextProvider';
 
 const CreateBooking = () => {
+  const navigate = useNavigate()
   const { currentUser } = useStateContext()
   const user = JSON.parse(currentUser)
   const [booking, setBooking] = useState({ userId: user._id, categoryId: '', location: '', state: '', town: '', address: '', bookDate: '' })
@@ -42,13 +41,14 @@ const CreateBooking = () => {
 
   const saveBooking = (e) => {
     e.preventDefault()
-    console.log("create booking", booking)
     axiosInstance.post(`/bookings`, booking)
-    .then((res) => {
-      console.log(res)
-    }).catch((err) => {
-      console.log(err)
-    })
+      .then((res) => {
+        console.log(res)
+        toast.success(res.data.data.message)
+        return navigate(`/my-booking/${user._id}`)
+      }).catch((err) => {
+        console.log(err)
+      })
   }
 
   return (
@@ -72,15 +72,30 @@ const CreateBooking = () => {
       <div className="container mx-auto mt-8">
 
         <div className="flex flex-row grid justify-items-end">
-          <Link
-            to={"/booking"}
-            className="group relative flex justify-center rounded-md bg-pink-500 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            <span className="relative inset-y-0 left-0 flex items-center">
-              <ListBulletIcon className="h-5 w-5 group-hover:text-white-400" aria-hidden="true" />
-            </span>
-            All Booking
-          </Link>
+          {user.role == "admin" &&
+            <div>
+              <Link
+                to={"/booking"}
+                className="group relative flex justify-center rounded-md bg-pink-500 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                <span className="relative inset-y-0 left-0 flex items-center">
+                  <ListBulletIcon className="h-5 w-5 group-hover:text-white-400" aria-hidden="true" />
+                </span>
+                All Booking
+              </Link>
+            </div>
+          }
+          <div>
+            <Link
+              to={`/my-booking/${user._id}`}
+              className="group relative flex justify-center rounded-md bg-pink-500 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              <span className="relative inset-y-0 left-0 flex items-center">
+                <ListBulletIcon className="h-5 w-5 group-hover:text-white-400" aria-hidden="true" />
+              </span>
+              My Booking
+            </Link>
+          </div>
         </div>
 
         <form onSubmit={saveBooking}>

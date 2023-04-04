@@ -8,6 +8,7 @@ import Login from "./views/auth/Login";
 import Signup from "./views/auth/Signup";
 import Dashboard from "./views/Dashboard";
 import Booking from "./views/booking/Booking";
+import MyBooking from './views/booking/MyBooking';
 import Category from "./views/category/Category";
 import CreateCategory from "./views/category/CreateCategory";
 import CreateBooking from "./views/booking/CreateBooking";
@@ -30,10 +31,11 @@ function App() {
         </Route>
 
         <Route element={<DashboardLayout/>}>
-          <Route element={<RequireAuth allowedRoles={['admin', 'dafault']}/>}>
+          <Route element={<RequireAuth allowedRoles={['admin', 'default']}/>}>
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/booking' element={<Booking />} />
             <Route path='/booking/create' element={<CreateBooking />} />
+            <Route path='/my-booking/:userId' element={<MyBooking />} />
             <Route path='/gallery' element={<Gallery />} />
           </Route>
           

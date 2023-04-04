@@ -33,7 +33,7 @@ module.exports.create = async(req, res) => {
 
     if(location == "personal"){
         if(!state || !town || !address){
-            return res.status(400).send(response.failure("Location details are missing"))
+            return res.status(400).send(response.failure("Personal location details are missing"))
         }
     }
 
@@ -89,12 +89,13 @@ module.exports.allBooking = async(req, res) => {
 }
 
 module.exports.myBooking = async(req, res) => {
-    const { id } = req.params
+    const { userId } = req.params
     try {
-        const myBookings = await Booking.find({user_id: id})
+        const myBookings = await Booking.find({user_id: userId}).populate('category_id').exec()
+        console.log("my booking", myBookings)
         return res.status(200).send(response.success('my bookings', myBookings))
     } catch (error) {
-        
+        console.log(error)
     }
 }
 

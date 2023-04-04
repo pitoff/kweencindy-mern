@@ -48,7 +48,7 @@ router.get('/all', bookingController.allBooking)
  *                   items: 
  *                     type: object
  */
-router.get('/my-booking', bookingController.myBooking)
+router.get('/my-booking/:userId', bookingController.myBooking)
 
 /**
  * @openapi
