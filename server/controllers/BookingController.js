@@ -13,15 +13,27 @@ const status = {
     PaymentNotConfirmed: 'payment not confirmed',
 }
 
+function referenceNo(n)
+{
+    let ref = [];
+    const prefix = "BBKC-"
+    let num = '01234567890987654321';
+    for (let i = 1; i <= n; i++) {
+        let index = Math.floor(Math.random(0) * n)
+        ref.push(num[index])
+    }
+    return prefix + ref.join('')
+}
+
 module.exports.create = async(req, res) => {
-    const { userId, categoryId, location, state, town, address, bookDate } = req.params
+    const { userId, categoryId, location, state, town, address, bookDate } = req.body
     if(!userId || !categoryId || !location || !bookDate){
         return res.status(400).send(response.failure("Please check required fields"))
     }
 
     if(location == "personal"){
         if(!state || !town || !address){
-            return res.status(400).send(response.failure("Please check required fields"))
+            return res.status(400).send(response.failure("Location details are missing"))
         }
     }
 
@@ -30,19 +42,22 @@ module.exports.create = async(req, res) => {
         try {
             const booking = await Booking.create({
                 user_id: userId,
+                ref_no: referenceNo(7),
                 category_id: categoryId,
                 location,
                 state: state ?? '',
                 town: town ?? '',
                 address: address ?? '',
-                book_date: bookDate
+                book_date: bookDate,
+                book_status: status.PendingBooking
             })
+            return res.status(201).send(response.success('booking created successfully', booking))
     
         } catch (error) {
-            
+            console.log(error)
         }
     }else{
-        return res.status(400).send(response.failure("Please user does not exist"))
+        return res.status(400).send(response.failure("User does not exist"))
     }
 
 }
