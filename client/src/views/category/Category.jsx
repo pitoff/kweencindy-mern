@@ -5,6 +5,7 @@ import DataTableExtensions from "react-data-table-component-extensions";
 import axiosInstance from '../../axios';
 import { PlusIcon } from "@heroicons/react/20/solid"
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { toast } from 'react-toastify';
 
 const Category = () => {
     const [categories, setCategories] = useState([])
@@ -22,6 +23,17 @@ const Category = () => {
     useEffect(() => {
         getCategories()
     }, [])
+
+    const removeCategory = async(id) => {
+        console.log("cat id", id)
+        await axiosInstance.delete(`/category/${id}`)
+        .then((res) => {
+            getCategories()
+            toast.success(res.data.message)
+        }).catch((err) => {
+            toast.error(err.response.data.message)
+        })
+    }
 
     const columns = [
         {
@@ -63,7 +75,9 @@ const Category = () => {
                         </span>
                         </Link>
 
-                        <button type='button' 
+                        <button 
+                            type='button' 
+                            onClick={() => removeCategory(row._id)}
                             className="mx-1 relative flex justify-center rounded-md bg-red-600 py-2 px-3 text-sm font-semibold text-white 
                             hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         > 
@@ -99,11 +113,6 @@ const Category = () => {
                 paddingRight: '8px',
             },
         },
-    };
-
-    const tableDatas = {
-        columns,
-        categories,
     };
 
     return (

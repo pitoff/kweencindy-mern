@@ -76,6 +76,6 @@ router.get('/confirmed-booking', bookingController.allAcceptedAndConfirmedBookin
 
 router.post('/', bookingController.create)
 
-router.patch('/:bookingId', bookingController.edit)
+router.get('/:bookingId', bookingController.edit)
 
 module.exports = router;

@@ -3,54 +3,55 @@ import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import { PlusIcon } from "@heroicons/react/20/solid"
 
-const Booking = () => {
-  const columns = [
-    {
-        name: 'S/N',
-        selector: row => row.id,
-        sortable: true,
-    },
-    {
-        name: 'REFERENCE_NO',
-        selector: row => row.ref,
-        sortable: true,
-    },
-    {
-        name: 'EMAIL',
-        selector: row => row.email,
-        sortable: true,
-    },
-    {
-        name: 'PRICE',
-        selector: row => row.price,
-        sortable: true,
-    },
-    {
-        name: 'ACTION',
-        selector: row => row.year,
-        sortable: true,
-    },
-];
+const BookingAwaitingAction = () => {
 
-const data = [
-    {
-        id: 1,
-        ref: 'BKC-1253',
-        email: 'jane@gmail.com',
-        price: '#30,000'
-    },
-    {
-        id: 2,
-        ref: 'BKC-7341',
-        email: 'julie@gmail.com',
-        price: '#40,000'
-    },
-]
-
-const tableDatas = {
-    columns,
-    data,
-};
+    const columns = [
+        {
+            name: 'S/N',
+            selector: row => row.id,
+            sortable: true,
+        },
+        {
+            name: 'REFERENCE_NO',
+            selector: row => row.ref,
+            sortable: true,
+        },
+        {
+            name: 'EMAIL',
+            selector: row => row.email,
+            sortable: true,
+        },
+        {
+            name: 'PRICE',
+            selector: row => row.price,
+            sortable: true,
+        },
+        {
+            name: 'ACTION',
+            selector: row => row.year,
+            sortable: true,
+        },
+    ];
+    
+    const data = [
+        {
+            id: 1,
+            ref: 'BKC-1253',
+            email: 'jane@gmail.com',
+            price: '#30,000'
+        },
+        {
+            id: 2,
+            ref: 'BKC-7341',
+            email: 'julie@gmail.com',
+            price: '#40,000'
+        },
+    ]
+    
+    const tableDatas = {
+        columns,
+        data,
+    };
 
   return (
     <>
@@ -59,13 +60,13 @@ const tableDatas = {
         <div className='md:w-1/2'>
           <header className="">
             <div className="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900">All Booking</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900">Booking Awaiting Action</h1>
             </div>
           </header>
         </div>
 
         <div className='px-6 md:pt-12 grid md:justify-items-end font-bold md:w-1/2'>
-          <p><em>Booked and Accepted Dates</em></p>
+          <p><em>Act on a Booked session</em></p>
         </div>
 
       </div>
@@ -104,4 +105,4 @@ const tableDatas = {
   )
 }
 
-export default Booking
+export default BookingAwaitingAction

@@ -63,7 +63,16 @@ module.exports.create = async(req, res) => {
 }
 
 module.exports.edit = async(req, res) => {
-
+    const { bookingId } = req.params
+    if(!mongoose.Types.ObjectId.isValid(bookingId)){
+        return res.status(400).send(response.failure('resource not found'))
+    }
+    try {
+        const booking = await Booking.findById(bookingId).populate('category_id', 'category price description')
+        return res.status(201).send(response.success('booking resource', booking))
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 module.exports.update = async(req, res) => {
@@ -91,8 +100,7 @@ module.exports.allBooking = async(req, res) => {
 module.exports.myBooking = async(req, res) => {
     const { userId } = req.params
     try {
-        const myBookings = await Booking.find({user_id: userId}).populate('category_id').exec()
-        console.log("my booking", myBookings)
+        const myBookings = await Booking.find({user_id: userId}).populate('category_id', 'category price').exec()
         return res.status(200).send(response.success('my bookings', myBookings))
     } catch (error) {
         console.log(error)

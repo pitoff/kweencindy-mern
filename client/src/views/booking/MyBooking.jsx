@@ -15,7 +15,7 @@ const MyBooking = () => {
     const getMyBooking = async () => {
         await axiosInstance.get(`/bookings/my-booking/${user._id}`)
             .then((res) => {
-                console.log(res.data.data)
+                console.log("my booking", res.data.data)
                 setMyBooking(res.data.data)
             }).catch((err) => {
                 console.log(err.response.data.message)
@@ -49,6 +49,7 @@ const MyBooking = () => {
             name: 'PRICE',
             selector: row => row.category_id.price,
             sortable: true,
+            width: "100px"
         },
         {
             name: 'STATUS',
@@ -62,7 +63,7 @@ const MyBooking = () => {
                 <>
                     <div className="container flex flex-row">
                         
-                        <Link to={`/category/create/${row._id}`} 
+                        <Link to={`/booking/edit/${row._id}`} 
                             className="mx-1 relative flex justify-center rounded-md bg-green-600 py-2 px-3 text-sm font-semibold text-white 
                             hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         > 
