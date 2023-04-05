@@ -48,7 +48,7 @@ router.get('/all', bookingController.allBooking)
  *                   items: 
  *                     type: object
  */
-router.get('/my-booking', bookingController.myBooking)
+router.get('/my-booking/:userId', bookingController.myBooking)
 
 /**
  * @openapi
@@ -73,5 +73,9 @@ router.get('/my-booking', bookingController.myBooking)
  *                     type: object
  */
 router.get('/confirmed-booking', bookingController.allAcceptedAndConfirmedBooking)
+
+router.post('/', bookingController.create)
+
+router.get('/:bookingId', bookingController.edit)
 
 module.exports = router;
