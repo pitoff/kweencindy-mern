@@ -19,7 +19,8 @@ const CreateBooking = () => {
     state: '',
     town: '',
     address: '',
-    bookDate: '' 
+    bookDate: '',
+    bookingId: '',
   })
   const [categories, setCategories] = useState([])
 
@@ -46,7 +47,8 @@ const CreateBooking = () => {
             state:data.data.state,
             town:data.data.town,
             address:data.data.address,
-            bookDate:data.data.book_date
+            bookDate:data.data.book_date,
+            bookingId:data.data._id
           })
       }).catch((err) => {
           console.log(err)
@@ -69,21 +71,21 @@ const CreateBooking = () => {
 
   const saveBooking = (e) => {
     e.preventDefault()
-    console.log("booking details", booking)
     if(bookingId){
-      // axiosInstance.put(`/bookings`, booking)
-      // .then((res) => {
-      //   console.log(res)
-      //   toast.success(res.data.data.message)
-      //   return navigate(`/my-booking/${user._id}`)
-      // }).catch((err) => {
-      //   console.log(err)
-      // })
+      console.log("booking details", booking)
+      axiosInstance.put(`/bookings/${bookingId}`, booking)
+      .then((res) => {
+        console.log(res)
+        toast.success(res.data.message)
+        return navigate(`/my-booking/${user._id}`)
+      }).catch((err) => {
+        console.log(err)
+      })
     }else{
       axiosInstance.post(`/bookings`, booking)
       .then((res) => {
         console.log(res)
-        toast.success(res.data.data.message)
+        toast.success(res.data.message)
         return navigate(`/my-booking/${user._id}`)
       }).catch((err) => {
         console.log(err)

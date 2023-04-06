@@ -78,4 +78,8 @@ router.post('/', bookingController.create)
 
 router.get('/:bookingId', bookingController.edit)
 
+router.put('/:bookingId', bookingController.update)
+
+router.delete('/:bookingId', bookingController.destroy)
+
 module.exports = router;

@@ -13,8 +13,7 @@ const status = {
     PaymentNotConfirmed: 'payment not confirmed',
 }
 
-function referenceNo(n)
-{
+function referenceNo(n) {
     let ref = [];
     const prefix = "BBKC-"
     let num = '01234567890987654321';
@@ -25,20 +24,20 @@ function referenceNo(n)
     return prefix + ref.join('')
 }
 
-module.exports.create = async(req, res) => {
+module.exports.create = async (req, res) => {
     const { userId, categoryId, location, state, town, address, bookDate } = req.body
-    if(!userId || !categoryId || !location || !bookDate){
+    if (!userId || !categoryId || !location || !bookDate) {
         return res.status(400).send(response.failure("Please check required fields"))
     }
 
-    if(location == "personal"){
-        if(!state || !town || !address){
+    if (location == "personal") {
+        if (!state || !town || !address) {
             return res.status(400).send(response.failure("Personal location details are missing"))
         }
     }
 
     const user = await User.findById(userId)
-    if(user){
+    if (user) {
         try {
             const booking = await Booking.create({
                 user_id: userId,
@@ -52,19 +51,19 @@ module.exports.create = async(req, res) => {
                 book_status: status.PendingBooking
             })
             return res.status(201).send(response.success('booking created successfully', booking))
-    
+
         } catch (error) {
             console.log(error)
         }
-    }else{
+    } else {
         return res.status(400).send(response.failure("User does not exist"))
     }
 
 }
 
-module.exports.edit = async(req, res) => {
+module.exports.edit = async (req, res) => {
     const { bookingId } = req.params
-    if(!mongoose.Types.ObjectId.isValid(bookingId)){
+    if (!mongoose.Types.ObjectId.isValid(bookingId)) {
         return res.status(400).send(response.failure('resource not found'))
     }
     try {
@@ -75,46 +74,80 @@ module.exports.edit = async(req, res) => {
     }
 }
 
-module.exports.update = async(req, res) => {
+module.exports.update = async (req, res) => {
+    const { categoryId, location, state, town, address, bookDate } = req.body
+    const { bookingId } = req.params
+    if (!categoryId || !location || !bookDate) {
+        return res.status(400).send(response.failure("Please check required fields"))
+    }
 
-}
-
-module.exports.destroy = async(req, res) => {
-
-}
-
-module.exports.viewBooking = async(req, res) => {
-
-}
-
-module.exports.allBooking = async(req, res) => {
+    if (location == "personal") {
+        if (!state || !town || !address) {
+            return res.status(400).send(response.failure("Personal location details are missing"))
+        }
+    }
     try {
-        const bookings = await Booking.find()
-        return res.status(200).send(response.success('list of bookings', bookings))
-        
+        const booking = await Booking.findByIdAndUpdate(bookingId, {
+            category_id: categoryId,
+            location,
+            state: state ?? '',
+            town: town ?? '',
+            address: address ?? '',
+            book_date: bookDate,
+        }, {new:true})
+        return res.status(201).send(response.success('booking updated successfully', booking))
+
     } catch (error) {
-        
+        console.log(error)
     }
 }
 
-module.exports.myBooking = async(req, res) => {
+module.exports.destroy = async (req, res) => {
+    const {bookingId} = req.params
+    if(!mongoose.Types.ObjectId.isValid(bookingId)){
+        return res.status(400).send(response.failure('resource not found'))
+    }
+
+    try {
+        const deleteBooking = await Booking.findByIdAndDelete(bookingId)
+        return res.status(200).send(response.success('booking deleted successfully', deleteBooking))
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+module.exports.viewBooking = async (req, res) => {
+
+}
+
+module.exports.allBooking = async (req, res) => {
+    try {
+        const bookings = await Booking.find()
+        return res.status(200).send(response.success('list of bookings', bookings))
+
+    } catch (error) {
+
+    }
+}
+
+module.exports.myBooking = async (req, res) => {
     const { userId } = req.params
     try {
-        const myBookings = await Booking.find({user_id: userId}).populate('category_id', 'category price').exec()
+        const myBookings = await Booking.find({ user_id: userId }).populate('category_id', 'category price').exec()
         return res.status(200).send(response.success('my bookings', myBookings))
     } catch (error) {
         console.log(error)
     }
 }
 
-module.exports.allAcceptedAndConfirmedBooking = async(req, res) => {
+module.exports.allAcceptedAndConfirmedBooking = async (req, res) => {
     res.send("Get all accepted and confirmed bookings")
 }
 
-module.exports.acceptBooking = async(req, res) => {
+module.exports.acceptBooking = async (req, res) => {
 
 }
 
-module.exports.declineBooking = async(req, res) => {
+module.exports.declineBooking = async (req, res) => {
 
 }
