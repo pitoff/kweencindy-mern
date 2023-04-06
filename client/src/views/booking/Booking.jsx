@@ -2,55 +2,60 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import { PlusIcon } from "@heroicons/react/20/solid"
+import { useStateContext } from '../../Context/ContextProvider';
+import { CheckCircleIcon, ListBulletIcon } from '@heroicons/react/24/outline';
 
 const Booking = () => {
+  const { currentUser } = useStateContext()
+  const user = JSON.parse(currentUser)
+
   const columns = [
     {
-        name: 'S/N',
-        selector: row => row.id,
-        sortable: true,
+      name: 'S/N',
+      selector: row => row.id,
+      sortable: true,
     },
     {
-        name: 'REFERENCE_NO',
-        selector: row => row.ref,
-        sortable: true,
+      name: 'REFERENCE_NO',
+      selector: row => row.ref,
+      sortable: true,
     },
     {
-        name: 'EMAIL',
-        selector: row => row.email,
-        sortable: true,
+      name: 'EMAIL',
+      selector: row => row.email,
+      sortable: true,
     },
     {
-        name: 'PRICE',
-        selector: row => row.price,
-        sortable: true,
+      name: 'PRICE',
+      selector: row => row.price,
+      sortable: true,
     },
     {
-        name: 'ACTION',
-        selector: row => row.year,
-        sortable: true,
+      name: 'ACTION',
+      selector: row => row.year,
+      sortable: true,
     },
-];
+  ];
 
-const data = [
+  const data = [
     {
-        id: 1,
-        ref: 'BKC-1253',
-        email: 'jane@gmail.com',
-        price: '#30,000'
+      id: 1,
+      ref: 'BKC-1253',
+      email: 'jane@gmail.com',
+      price: '#30,000'
     },
     {
-        id: 2,
-        ref: 'BKC-7341',
-        email: 'julie@gmail.com',
-        price: '#40,000'
+      id: 2,
+      ref: 'BKC-7341',
+      email: 'julie@gmail.com',
+      price: '#40,000'
     },
-]
+  ]
 
-const tableDatas = {
+  const tableDatas = {
     columns,
     data,
-};
+  };
 
   return (
     <>
@@ -72,16 +77,51 @@ const tableDatas = {
 
       <div className="container mx-auto mt-8">
 
-        <div className="flex flex-row grid justify-items-end">
-          <Link
-            to={"/booking/create"}
-            className="group relative flex justify-center rounded-md bg-pink-500 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            <span className="relative inset-y-0 left-0 flex items-center">
-              <PlusIcon className="h-5 w-5 group-hover:text-white-400" aria-hidden="true" />
-            </span>
-            Create Booking
-          </Link>
+        <div className="flex flex-row justify-end">
+          {user.role == "default" &&
+            <>
+              <Link
+                to={`/my-booking/${user._id}`}
+                className="group relative flex justify-center rounded-md bg-gray-600 m-1 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                <span className="relative inset-y-0 left-0 flex items-center">
+                  <ListBulletIcon className="h-5 w-5 group-hover:text-white-400" aria-hidden="true" />
+                </span>
+                My Booking
+              </Link>
+              <Link
+                to={"/booking/create"}
+                className="group relative flex justify-center rounded-md bg-pink-500 m-1 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                <span className="relative inset-y-0 left-0 flex items-center">
+                  <PlusIcon className="h-5 w-5 group-hover:text-white-400" aria-hidden="true" />
+                </span>
+                Create Booking
+              </Link>
+            </>
+          }
+          {user.role == "admin" &&
+            <>
+              <Link
+                to={"/booking-awaiting-actions"}
+                className="group relative flex justify-center rounded-md bg-gray-600 m-1 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                <span className="relative inset-y-0 left-0 flex items-center">
+                  <CheckCircleIcon className="h-5 w-5 group-hover:text-white-400" aria-hidden="true" />
+                </span>
+                Accept Booking
+              </Link>
+              <Link
+                to={"/booking/create"}
+                className="group relative flex justify-center rounded-md bg-pink-500 m-1 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                <span className="relative inset-y-0 left-0 flex items-center">
+                  <PlusIcon className="h-5 w-5 group-hover:text-white-400" aria-hidden="true" />
+                </span>
+                Create Booking
+              </Link>
+            </>
+          }
         </div>
 
         <DataTable

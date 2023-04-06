@@ -122,7 +122,7 @@ module.exports.viewBooking = async (req, res) => {
 
 module.exports.allBooking = async (req, res) => {
     try {
-        const bookings = await Booking.find()
+        const bookings = await Booking.find().populate('category_id', 'category price').populate('user_id', 'fullname email')
         return res.status(200).send(response.success('list of bookings', bookings))
 
     } catch (error) {

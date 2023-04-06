@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from "react-toastify";
 import axiosInstance from '../../axios';
-import { ListBulletIcon, UserCircleIcon, PhotoIcon } from "@heroicons/react/20/solid"
+import { ListBulletIcon, UserCircleIcon, PhotoIcon, CheckCircleIcon } from "@heroicons/react/20/solid"
 import { useStateContext } from '../../Context/ContextProvider';
 
 const CreateBooking = () => {
   const navigate = useNavigate()
-  const {bookingId} = useParams()
+  const { bookingId } = useParams()
   const { currentUser } = useStateContext()
   const user = JSON.parse(currentUser)
-  const [booking, setBooking] = useState({ 
+  const [booking, setBooking] = useState({
     userId: user._id,
     categoryId: '',
-    price:'',
-    description:'',
+    price: '',
+    description: '',
     location: '',
     state: '',
     town: '',
@@ -35,25 +35,25 @@ const CreateBooking = () => {
   }
 
   useEffect(() => {
-    if(bookingId){
+    if (bookingId) {
       axiosInstance.get(`/bookings/${bookingId}`)
-      .then(({data}) => {
+        .then(({ data }) => {
           console.log("edit booking", data)
           setBooking({
-            categoryId:data.data.category_id._id,
-            price:data.data.category_id.price,
-            description:data.data.category_id.description,
-            location:data.data.location,
-            state:data.data.state,
-            town:data.data.town,
-            address:data.data.address,
-            bookDate:data.data.book_date,
-            bookingId:data.data._id
+            categoryId: data.data.category_id._id,
+            price: data.data.category_id.price,
+            description: data.data.category_id.description,
+            location: data.data.location,
+            state: data.data.state,
+            town: data.data.town,
+            address: data.data.address,
+            bookDate: data.data.book_date,
+            bookingId: data.data._id
           })
-      }).catch((err) => {
+        }).catch((err) => {
           console.log(err)
           toast.error(err.response.data.message)
-      })
+        })
     }
     getCategories()
   }, [])
@@ -63,7 +63,7 @@ const CreateBooking = () => {
     axiosInstance.get(`/category/${e}`)
       .then((res) => {
         console.log(res.data.data)
-        setBooking({ ...booking, categoryId: e, price:res.data.data.price, description:res.data.data.description})
+        setBooking({ ...booking, categoryId: e, price: res.data.data.price, description: res.data.data.description })
       }).catch((err) => {
         console.log(err)
       })
@@ -71,27 +71,27 @@ const CreateBooking = () => {
 
   const saveBooking = (e) => {
     e.preventDefault()
-    if(bookingId){
+    if (bookingId) {
       console.log("booking details", booking)
       axiosInstance.put(`/bookings/${bookingId}`, booking)
-      .then((res) => {
-        console.log(res)
-        toast.success(res.data.message)
-        return navigate(`/my-booking/${user._id}`)
-      }).catch((err) => {
-        console.log(err)
-      })
-    }else{
+        .then((res) => {
+          console.log(res)
+          toast.success(res.data.message)
+          return navigate(`/my-booking/${user._id}`)
+        }).catch((err) => {
+          console.log(err)
+        })
+    } else {
       axiosInstance.post(`/bookings`, booking)
-      .then((res) => {
-        console.log(res)
-        toast.success(res.data.message)
-        return navigate(`/my-booking/${user._id}`)
-      }).catch((err) => {
-        console.log(err)
-      })
+        .then((res) => {
+          console.log(res)
+          toast.success(res.data.message)
+          return navigate(`/my-booking/${user._id}`)
+        }).catch((err) => {
+          console.log(err)
+        })
     }
-    
+
   }
 
   return (
@@ -122,9 +122,9 @@ const CreateBooking = () => {
               className="group relative flex justify-center rounded-md bg-gray-600 m-1 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               <span className="relative inset-y-0 left-0 flex items-center">
-                <ListBulletIcon className="h-5 w-5 group-hover:text-white-400" aria-hidden="true" />
+                <CheckCircleIcon className="h-5 w-5 group-hover:text-white-400" aria-hidden="true" />
               </span>
-              All Booking
+              Accept Booking
             </Link>
           }
           {user.role == "default" &&

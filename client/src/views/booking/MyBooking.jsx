@@ -73,7 +73,7 @@ const MyBooking = () => {
             sortable: true,
         },
         {
-            name: 'ACTION',
+            name: 'ACTIONS',
             selector: row => row.year,
             width: "400px",
             cell: (row) =>
@@ -86,9 +86,9 @@ const MyBooking = () => {
                             hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                             <span className="relative inset-y-0 left-0 flex items-center">
-                                <CheckBadgeIcon className='h-5 w-5 ' />
+                                <CheckBadgeIcon className='h-5 w-5' />
                             </span>
-                            <span className='pl-1 justify-items-end w-20'>Mark Paid</span>
+                            <span className='w-20'>Mark Paid</span>
                         </button>
 
                         <Link to={`/booking/edit/${row._id}`}
@@ -98,7 +98,7 @@ const MyBooking = () => {
                             <span className="relative inset-y-0 left-0 flex items-center">
                                 <CreditCardIcon className='h-5 w-5 ' />
                             </span>
-                            <span className='pl-1 justify-items-end w-7'>Pay</span>
+                            <span className='pl-1 w-7'>Pay</span>
                         </Link>
 
                         <Link to={`/booking/edit/${row._id}`}

@@ -9,6 +9,7 @@ const navigation = [
   { name: 'Dashboard', to: '/dashboard' },
   { name: 'Booking', to: '/booking' },
   { name: 'Category', to: '/category' },
+  { name: 'Payment Method', to: '/payment-method' },
 ]
 
 function classNames(...classes) {

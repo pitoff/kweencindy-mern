@@ -1,57 +1,138 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
-import { PlusIcon } from "@heroicons/react/20/solid"
+import { PlusIcon, CheckBadgeIcon, CreditCardIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid"
+import axiosInstance from '../../axios';
 
 const BookingAwaitingAction = () => {
+  const [bookings, setBookings] = useState([])
 
-    const columns = [
-        {
-            name: 'S/N',
-            selector: row => row.id,
-            sortable: true,
-        },
-        {
-            name: 'REFERENCE_NO',
-            selector: row => row.ref,
-            sortable: true,
-        },
-        {
-            name: 'EMAIL',
-            selector: row => row.email,
-            sortable: true,
-        },
-        {
-            name: 'PRICE',
-            selector: row => row.price,
-            sortable: true,
-        },
-        {
-            name: 'ACTION',
-            selector: row => row.year,
-            sortable: true,
-        },
-    ];
-    
-    const data = [
-        {
-            id: 1,
-            ref: 'BKC-1253',
-            email: 'jane@gmail.com',
-            price: '#30,000'
-        },
-        {
-            id: 2,
-            ref: 'BKC-7341',
-            email: 'julie@gmail.com',
-            price: '#40,000'
-        },
-    ]
-    
-    const tableDatas = {
-        columns,
-        data,
-    };
+  const getBooking = async () => {
+    await axiosInstance.get(`/bookings/all`)
+      .then((res) => {
+        console.log("bookings", res.data.data)
+        setBookings(res.data.data)
+      }).catch((err) => {
+        console.log(err.response.data.message)
+      })
+  }
+
+  useEffect(() => {
+    getBooking()
+  }, [])
+
+  const columns = [
+    {
+      name: 'S/N',
+      cell: (row, index) => (index + 1),
+      selector: row => row._id,
+      width: "65px"
+    },
+    {
+      name: 'REF NO.',
+      selector: row => row.ref_no,
+      sortable: true,
+      width: "150px"
+    },
+    {
+      name: 'EMAIL',
+      selector: row => row.user_id.email,
+      sortable: true,
+      width: "150px"
+    },
+    {
+      name: 'CATEGORY',
+      selector: row => row.category_id.category,
+      sortable: true,
+      width: "150px"
+    },
+    {
+      name: 'PRICE',
+      selector: row => row.category_id.price,
+      sortable: true,
+      width: "100px"
+    },
+    {
+      name: 'STATUS',
+      selector: row => row.book_status,
+      sortable: true,
+    },
+    {
+      name: 'ACTIONS',
+      selector: row => row.year,
+      width: "400px",
+      cell: (row) =>
+        <>
+          <div className="container flex flex-row">
+
+            <button type='button'
+              onClick={() => { setOpen(true); setBookingToDelete(row) }}
+              className="mx-1 relative flex justify-center rounded-md bg-green-900 py-2 px-3 text-sm font-semibold text-white 
+                        hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              <span className="relative inset-y-0 left-0 flex items-center">
+                <CheckBadgeIcon className='h-5 w-5' />
+              </span>
+              <span className='w-20'>Mark Paid</span>
+            </button>
+
+            <Link to={`/booking/edit/${row._id}`}
+              className="mx-1 relative flex justify-center rounded-md bg-blue-500 py-2 px-3 text-sm font-semibold text-white 
+                        hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              <span className="relative inset-y-0 left-0 flex items-center">
+                <CreditCardIcon className='h-5 w-5 ' />
+              </span>
+              <span className='pl-1 w-7'>Pay</span>
+            </Link>
+
+            <Link to={`/booking/edit/${row._id}`}
+              className="mx-1 relative flex justify-center rounded-md bg-green-600 py-2 px-3 text-sm font-semibold text-white 
+                        hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              <span className="relative inset-y-0 left-0 flex items-center">
+                <PencilSquareIcon className='h-5 w-5 ' />
+              </span>
+            </Link>
+
+            <button type='button'
+              onClick={() => { setOpen(true); setBookingToDelete(row) }}
+              className="mx-1 relative flex justify-center rounded-md bg-red-600 py-2 px-3 text-sm font-semibold text-white 
+                        hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              <span className="relative inset-y-0 left-0 flex items-center">
+                <TrashIcon className='h-5 w-5 ' />
+              </span>
+            </button>
+
+
+          </div>
+
+        </>
+
+    },
+  ];
+
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: '72px', // override the row height
+      },
+    },
+    headCells: {
+      style: {
+        paddingLeft: '8px', // override the cell padding for head cells
+        paddingRight: '8px',
+        fontSize: '14px'
+      },
+    },
+    cells: {
+      style: {
+        paddingLeft: '8px', // override the cell padding for data cells
+        paddingRight: '8px',
+      },
+    },
+  };
 
   return (
     <>
@@ -89,7 +170,7 @@ const BookingAwaitingAction = () => {
           fixedHeader
           columns={columns}
           // selectableRows
-          data={data}
+          data={bookings}
           // customStyles={customStyles}
           persistTableHead
           defaultSortField="id"
