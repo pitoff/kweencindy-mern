@@ -1,12 +1,13 @@
 import React from 'react'
 import { Outlet, Navigate } from 'react-router-dom'
 import { useStateContext } from '../Context/ContextProvider'
+import logo from "../assets/kweencindyLogo.png"
 
 const AuthLayout = () => {
-  const { currentUser, setCurrentUser, userToken, setUserToken} = useStateContext()
+  const { userToken } = useStateContext()
 
   if(userToken) {
-    return <Navigate to="/" />
+    return <Navigate to="/dashboard" />
   }
 
   return (
@@ -16,7 +17,7 @@ const AuthLayout = () => {
           <div>
             <img
               className="mx-auto h-12 w-auto"
-              // src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              src={logo}
               alt={`${import.meta.env.VITE_APP_NAME}`}
             />
 

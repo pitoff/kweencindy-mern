@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <Route path='/*' element={<App />}/>
           </Routes>
         </Router>
-      <ToastContainer/>
+      <ToastContainer position="bottom-center"/>
     </ContextProvider>
   </React.StrictMode>
 )

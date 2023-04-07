@@ -6,7 +6,7 @@ const Category = require('../models/Category')
 
 module.exports.categories = async(req, res) => {
     try {
-        const categories = await Category.find()
+        const categories = await Category.find().sort({ createdAt: 'desc' })
         return res.status(200).send(response.success('category list', categories))
     } catch (error) {
         console.log(error)
@@ -61,5 +61,19 @@ module.exports.update = async(req, res) => {
 }
 
 module.exports.destroy = async(req, res) => {
+    const { categoryId } = req.params
+    if(!mongoose.Types.ObjectId.isValid(categoryId)){
+        return res.status(400).send(response.failure('resource not found'))
+    }
+    const categoryExistInBooking = await Booking.findOne({category_id: categoryId}).exec()
+    if(categoryExistInBooking){
+        return res.status(400).send(response.failure('resource already in use'))
+    }
 
+    try {
+        await Category.findByIdAndRemove(categoryId)
+        return res.status(201).send(response.success('category removed successfully'))
+    } catch (error) {
+        console.log(error)
+    }
 }

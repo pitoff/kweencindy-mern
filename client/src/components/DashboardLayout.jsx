@@ -9,6 +9,7 @@ const navigation = [
   { name: 'Dashboard', to: '/dashboard' },
   { name: 'Booking', to: '/booking' },
   { name: 'Category', to: '/category' },
+  { name: 'Payment Method', to: '/payment-method' },
 ]
 
 function classNames(...classes) {
@@ -17,7 +18,10 @@ function classNames(...classes) {
 
 const DashboardLayout = () => {
   const { currentUser, setCurrentUser, userToken, setUserToken } = useStateContext()
-  const user = JSON.parse(currentUser)
+  let user = ''
+  if(currentUser){
+    user = JSON.parse(currentUser)
+  }
   if (!userToken) {
     return <Navigate to={"/login"} />
   }
