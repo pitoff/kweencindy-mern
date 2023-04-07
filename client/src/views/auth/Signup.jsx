@@ -30,12 +30,13 @@ const Signup = () => {
 
     return (
         <>
-      <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-m mw6 shadow-2 text-center">
+      <div className="flex min-h-full items-center justify-center  sm:px-0">
+      <article className="br3 ba b--black-10 mv2 w-100 w-50-m w-25-m mw6 shadow-2 text-center">
       <main className="pa2 black-80">
             <h2 className="mt-4 text-center text-3xl font-bold tracking-tight text-gray-900">
                 Create Account
             </h2>
-            <p className="mt-3 text-center text-sm f1 fw4 text-gray-600">
+            <p className="mt-2 text-center text-sm f1 fw4 text-gray-600">
                 Have Account? {' '}
                 <Link to="/login"
                     className="font-medium text-indigo-600 hover:text-indigo-500">
@@ -43,7 +44,7 @@ const Signup = () => {
                 </Link>
             </p>
             
-            <form className="mt-8 space-y-6 " onSubmit={saveUser}>
+            <form className="mt-4 space-y-3 " onSubmit={saveUser}>
                 <div className="-space-y-px rounded-md shadow-sm">
                     <div className='br4 pa1'>
                         <label htmlFor="email-address" className="sr-only">
@@ -142,6 +143,7 @@ const Signup = () => {
             </form>
             </main>
          </article>
+         </div>
         </>
     )
 }
