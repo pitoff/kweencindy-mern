@@ -75,7 +75,7 @@ const MyBooking = () => {
         {
             name: 'ACTIONS',
             selector: row => row.year,
-            width: "400px",
+            width: "350px",
             cell: (row) =>
                 <>
                     <div className="container flex flex-row">

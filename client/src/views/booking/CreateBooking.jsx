@@ -69,11 +69,11 @@ const CreateBooking = () => {
       })
   }
 
-  const saveBooking = (e) => {
+  const saveBooking = async(e) => {
     e.preventDefault()
     if (bookingId) {
       console.log("booking details", booking)
-      axiosInstance.put(`/bookings/${bookingId}`, booking)
+      await axiosInstance.put(`/bookings/${bookingId}`, booking)
         .then((res) => {
           console.log(res)
           toast.success(res.data.message)
@@ -82,7 +82,7 @@ const CreateBooking = () => {
           console.log(err)
         })
     } else {
-      axiosInstance.post(`/bookings`, booking)
+      await axiosInstance.post(`/bookings`, booking)
         .then((res) => {
           console.log(res)
           toast.success(res.data.message)
