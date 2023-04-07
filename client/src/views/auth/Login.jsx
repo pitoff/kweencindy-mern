@@ -35,11 +35,12 @@ const Login = () => {
 
   return (
     <>
-      <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-m mw6 shadow-2 text-center">
-        <main className="pa2 black-80">
+       <div className="flex min-h-full items-center justify-center sm:px-2 lg:px-8">
+      <article className="br3 ba b--black-10 mv2 w-100 w-50-m w-25-m mw6 shadow-1 text-center">
+        <main className="pa black-100">
           <h1 className="ba b--transparent f1 fw7 ph0 mh0"> Login </h1>
 
-          <p className="mt-4 text-center text-sm f1 fw4 text-gray-600">
+          <p className="mt-2 text-center text-sm f1 fw4 text-gray-600">
             No Account?{" "}
             <Link
               to="/sign-up"
@@ -48,7 +49,7 @@ const Login = () => {
               Create Account
             </Link>
           </p>
-          <form className="mt-8 space-y-6" onSubmit={loginUser}>
+          <form className="mt-4 space-y-2" onSubmit={loginUser}>
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="-space-y-px rounded-md shadow-sm">
               <div className="br3 pa2">
@@ -132,6 +133,7 @@ const Login = () => {
           </form>
         </main>
       </article>
+      </div>
     </>
   );
 };
