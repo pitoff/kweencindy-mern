@@ -7,9 +7,11 @@ import axiosInstance from '../axios'
 
 const navigation = [
   { name: 'Dashboard', to: '/dashboard' },
+  { name: 'Users', to: '/users' },
   { name: 'Booking', to: '/booking' },
   { name: 'Category', to: '/category' },
   { name: 'Payment Method', to: '/payment-method' },
+  { name: 'Gallery', to: '/gallery' },
 ]
 
 function classNames(...classes) {

@@ -44,9 +44,10 @@ function App() {
           <Route element={<RequireAuth allowedRoles={['admin']}/>}>
             <Route path='/category' element={<Category />} />
             <Route path='/category/create' element={<CreateCategory />} />
-            <Route path='/category/create/:categoryId' element={<CreateCategory />} />
+            <Route path='/category/:categoryId' element={<CreateCategory />} />
             <Route path='/payment-method' element={<PaymentMethod />}/>
             <Route path='/payment-method/create' element={<CreatePaymentMethod />}/>
+            <Route path='/payment-method/:paymentMethodId' element={<CreatePaymentMethod />}/>
             <Route path='/booking-awaiting-actions' element={<BookingAwaitingAction />}/>
             <Route path='/gallery/create' element={<CreateImage />} />
           </Route>

@@ -10,6 +10,7 @@ const v1AuthRoute = require('./v1/routes/authRoutes')
 const v1UserRoute = require('./v1/routes/userRoutes')
 const v1BookingRoute = require('./v1/routes/bookingRoutes')
 const v1CategoryRoute = require('./v1/routes/categoryRoutes')
+const v1PaymentMethod = require('./v1/routes/paymentMethodRoutes')
 
 const { swaggerDocs: v1SwaggerDocs } = require('./swagger')
 
@@ -32,6 +33,7 @@ app.use("/api/v1/", v1AuthRoute)
 app.use("/api/v1/bookings", v1BookingRoute)
 app.use("/api/v1/users", v1UserRoute)
 app.use("/api/v1/category", v1CategoryRoute)
+app.use("/api/v1/payment-method", v1PaymentMethod)
 
 const PORT = process.env.PORT || 5000;
 
@@ -43,4 +45,3 @@ mongoose.connect(mongoDb, {useNewUrlParser:true, useUnifiedTopology:true})
         v1SwaggerDocs(app, PORT)
     })
 }).catch((error) => console.log(error))
-

@@ -66,7 +66,7 @@ const Category = () => {
                 <>
                     <div className="container flex flex-row">
                         
-                        <Link to={`/category/create/${row._id}`} 
+                        <Link to={`/category/${row._id}`} 
                             className="mx-1 relative flex justify-center rounded-md bg-green-600 py-2 px-3 text-sm font-semibold text-white 
                             hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         > 
