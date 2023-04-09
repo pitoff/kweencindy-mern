@@ -3,15 +3,7 @@ const Booking = require('../models/Booking')
 const User = require('../models/User')
 const ResponseHelper = require('../helpers/ResponseHelper')
 const response = new ResponseHelper()
-const status = {
-    PendingBooking: 'pending booking',
-    BookingAccepted: 'booking accepted',
-    BookingDeclined: 'booking declined',
-    PendingPayment: 'pending payment',
-    AwaitingConfirmation: 'awaiting confirmation',
-    PaymentConfirmed: 'payment confirmed',
-    PaymentNotConfirmed: 'payment not confirmed',
-}
+const bookingStatus = require('../helpers/StatusHelper')
 
 function referenceNo(n) {
     let ref = [];
@@ -48,7 +40,8 @@ module.exports.create = async (req, res) => {
                 town: town ?? '',
                 address: address ?? '',
                 book_date: bookDate,
-                book_status: status.PendingBooking
+                payment_status: bookingStatus.PendingPayment,
+                book_status: bookingStatus.PendingBooking,
             })
             return res.status(201).send(response.success('booking created successfully', booking))
 
@@ -145,9 +138,27 @@ module.exports.allAcceptedAndConfirmedBooking = async (req, res) => {
 }
 
 module.exports.acceptBooking = async (req, res) => {
-
+    const { bookingId } = req.params
+    if (!mongoose.Types.ObjectId.isValid(bookingId)) {
+        return res.status(400).send(response.failure('resource not found'))
+    }
+    try {
+        const booking = await Booking.findByIdAndUpdate(bookingId, {book_status: bookingStatus.BookingAccepted}, {new:true})
+        return res.status(200).send(response.success('Booking accepted', booking))
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 module.exports.declineBooking = async (req, res) => {
-
+    const { bookingId } = req.params
+    if (!mongoose.Types.ObjectId.isValid(bookingId)) {
+        return res.status(400).send(response.failure('resource not found'))
+    }
+    try {
+        const booking = await Booking.findByIdAndUpdate(bookingId, {book_status: bookingStatus.BookingDeclined}, {new:true})
+        return res.status(200).send(response.success('Booking declined', booking))
+    } catch (error) {
+        console.log(error)
+    }
 }

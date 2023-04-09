@@ -27,7 +27,7 @@ const MyBooking = () => {
             })
     }
 
-    const deleteBooking = async(id) => {
+    const deleteBooking = async (id) => {
         await axiosInstance.delete(`/bookings/${id}`)
             .then((res) => {
                 console.log("delete response", res)
@@ -35,6 +35,17 @@ const MyBooking = () => {
                 toast.success(res.data.message)
             }).catch((err) => {
                 console.log(err)
+            })
+    }
+
+    const markBookingAsPaid = async (id) => {
+        await axiosInstance.put(`/payment/mark-paid/${id}`)
+            .then((res) => {
+                console.log(res)
+                toast.success(res.data.message)
+            }).catch((err) => {
+                console.log(err)
+                toast.success(err.response.data.message)
             })
     }
 
@@ -79,17 +90,19 @@ const MyBooking = () => {
             cell: (row) =>
                 <>
                     <div className="container flex flex-row">
-
-                        <button type='button'
-                            onClick={() => {setOpen(true); setBookingToDelete(row)}}
-                            className="mx-1 relative flex justify-center rounded-md bg-green-900 py-2 px-3 text-sm font-semibold text-white 
+                        {row.book_status == "booking accepted" &&
+                            <button type='button'
+                                onClick={() => { markBookingAsPaid(row._id) }}
+                                className="mx-1 relative flex justify-center rounded-md bg-green-900 py-2 px-3 text-sm font-semibold text-white 
                             hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                        >
-                            <span className="relative inset-y-0 left-0 flex items-center">
-                                <CheckBadgeIcon className='h-5 w-5' />
-                            </span>
-                            <span className='w-20'>Mark Paid</span>
-                        </button>
+                            >
+                                <span className="relative inset-y-0 left-0 flex items-center">
+                                    <CheckBadgeIcon className='h-5 w-5' />
+                                </span>
+                                <span className='w-20'>Mark Paid</span>
+                            </button>
+                        }
+
 
                         <Link to={`/make-payment/${row._id}`}
                             className="mx-1 relative flex justify-center rounded-md bg-blue-500 py-2 px-3 text-sm font-semibold text-white 
@@ -111,7 +124,7 @@ const MyBooking = () => {
                         </Link>
 
                         <button type='button'
-                            onClick={() => {setOpen(true); setBookingToDelete(row)}}
+                            onClick={() => { setOpen(true); setBookingToDelete(row) }}
                             className="mx-1 relative flex justify-center rounded-md bg-red-600 py-2 px-3 text-sm font-semibold text-white 
                             hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
@@ -245,7 +258,7 @@ const MyBooking = () => {
                                         <button
                                             type="button"
                                             className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                                            onClick={() => {deleteBooking(bookingToDelete._id); setOpen(false)}}
+                                            onClick={() => { deleteBooking(bookingToDelete._id); setOpen(false) }}
                                         >
                                             Delete
                                         </button>

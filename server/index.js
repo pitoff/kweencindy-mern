@@ -10,7 +10,8 @@ const v1AuthRoute = require('./v1/routes/authRoutes')
 const v1UserRoute = require('./v1/routes/userRoutes')
 const v1BookingRoute = require('./v1/routes/bookingRoutes')
 const v1CategoryRoute = require('./v1/routes/categoryRoutes')
-const v1PaymentMethod = require('./v1/routes/paymentMethodRoutes')
+const v1PaymentMethodRoute = require('./v1/routes/paymentMethodRoutes')
+const v1PaymentRoute = require('./v1/routes/paymentRoutes')
 
 const { swaggerDocs: v1SwaggerDocs } = require('./swagger')
 
@@ -33,7 +34,8 @@ app.use("/api/v1/", v1AuthRoute)
 app.use("/api/v1/bookings", v1BookingRoute)
 app.use("/api/v1/users", v1UserRoute)
 app.use("/api/v1/category", v1CategoryRoute)
-app.use("/api/v1/payment-method", v1PaymentMethod)
+app.use("/api/v1/payment-method", v1PaymentMethodRoute)
+app.use("/api/v1/payment", v1PaymentRoute)
 
 const PORT = process.env.PORT || 5000;
 

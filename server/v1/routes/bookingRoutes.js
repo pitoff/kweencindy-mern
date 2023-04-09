@@ -80,6 +80,10 @@ router.get('/:bookingId', bookingController.edit)
 
 router.put('/:bookingId', bookingController.update)
 
+router.put('/accept/:bookingId', bookingController.acceptBooking)
+
+router.put('/decline/:bookingId', bookingController.declineBooking)
+
 router.delete('/:bookingId', bookingController.destroy)
 
 module.exports = router;
