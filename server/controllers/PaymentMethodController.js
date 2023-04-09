@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const PaymentMethod = require('../models/PaymentMethod')
+const Booking = require('../models/Booking')
 const ResponseHelper = require('../helpers/ResponseHelper')
 const response = new ResponseHelper()
 
@@ -103,4 +104,28 @@ module.exports.destroy = async(req, res) => {
     } catch (error) {
         console.log(error)
     }
+}
+
+module.exports.activePaymentMethod = async(req, res) => {
+    const { bookingId } = req.params
+    if(!mongoose.Types.ObjectId.isValid(bookingId)){
+        return res.status(400).send(response.failure('resource not found'))
+    }
+
+    try {
+        const booking = await Booking.findById(bookingId)
+            .populate('category_id', 'category price')
+            .populate('user_id', 'fullname email')
+
+        const activePaymentMethod = await PaymentMethod.findOne({is_active: true})
+        if(!activePaymentMethod){
+            return res.status(400).send(response.failure('No active method'))
+        }
+        // console.log("booking", booking)
+        // console.log("pay method", activePaymentMethod)
+        return res.status(200).send(response.success('payment method for booking', {booking: booking, paymentMethod: activePaymentMethod}))
+    } catch (error) {
+        console.log(error)
+    }
+
 }

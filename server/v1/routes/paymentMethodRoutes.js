@@ -5,6 +5,7 @@ const paymentMethodController = require('../../controllers/PaymentMethodControll
 router.get('/', paymentMethodController.index)
 router.post('/create', paymentMethodController.create)
 router.get('/:paymentMethodId', paymentMethodController.paymentMethod)
+router.get('/active/:bookingId', paymentMethodController.activePaymentMethod)
 router.put('/:paymentMethodId', paymentMethodController.update)
 router.put('/toggle-activate/:paymentMethodId', paymentMethodController.toggleActivatePaymentMethod)
 router.delete('/:paymentMethodId', paymentMethodController.destroy)

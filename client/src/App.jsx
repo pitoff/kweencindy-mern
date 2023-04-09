@@ -19,6 +19,7 @@ import CreatePaymentMethod from './views/payment/CreatePaymentMethod';
 import Gallery from './views/gallery/Gallery';
 import CreateImage from './views/gallery/CreateImage';
 import BookingAwaitingAction from './views/booking/BookingAwaitingAction';
+import MakePayment from './views/payment/MakePayment';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
             <Route path='/booking/create' element={<CreateBooking />} />
             <Route path='/booking/edit/:bookingId' element={<CreateBooking />} />
             <Route path='/my-booking/:userId' element={<MyBooking />} />
+            <Route path='/make-payment/:bookingId' element={<MakePayment />}/>
             <Route path='/gallery' element={<Gallery />} />
           </Route>
           

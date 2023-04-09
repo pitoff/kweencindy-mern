@@ -91,7 +91,7 @@ const MyBooking = () => {
                             <span className='w-20'>Mark Paid</span>
                         </button>
 
-                        <Link to={`/booking/edit/${row._id}`}
+                        <Link to={`/make-payment/${row._id}`}
                             className="mx-1 relative flex justify-center rounded-md bg-blue-500 py-2 px-3 text-sm font-semibold text-white 
                             hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
