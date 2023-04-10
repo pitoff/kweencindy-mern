@@ -48,7 +48,7 @@ const BookingAwaitingAction = () => {
         toast.success(err.response.data.message)
       })
   }
-
+  //NB Implement IO for when booking is accepted it should reflect on my bookings without page refresh
   const declineBooking = async (id) => {
     await axiosInstance.put(`/bookings/decline/${id}`)
       .then((res) => {
