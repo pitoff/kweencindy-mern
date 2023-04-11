@@ -48,9 +48,33 @@ const BookingAwaitingAction = () => {
         toast.success(err.response.data.message)
       })
   }
-
+  //NB Implement IO for when booking is accepted it should reflect on my bookings without page refresh
   const declineBooking = async (id) => {
     await axiosInstance.put(`/bookings/decline/${id}`)
+      .then((res) => {
+        console.log(res)
+        getBooking()
+        toast.success(res.data.message)
+      }).catch((err) => {
+        console.log(err)
+        toast.success(err.response.data.message)
+      })
+  }
+
+  const markPaymentAsReceived = async (id) => {
+    await axiosInstance.put(`/payment/mark-payment-as-received/${id}`)
+      .then((res) => {
+        console.log(res)
+        getBooking()
+        toast.success(res.data.message)
+      }).catch((err) => {
+        console.log(err)
+        toast.success(err.response.data.message)
+      })
+  }
+
+  const markPaymentAsNotReceived = async(id) => {
+    await axiosInstance.put(`/payment/mark-payment-as-not-received/${id}`)
       .then((res) => {
         console.log(res)
         getBooking()
@@ -142,28 +166,33 @@ const BookingAwaitingAction = () => {
         <>
           <div className="container flex flex-row">
 
-            <button type='button'
-              onClick={() => { setOpen(true); setBookingToDelete(row) }}
-              className="mx-1 relative flex justify-center rounded-md bg-blue-900 py-2 px-3 text-sm font-semibold text-white 
-            hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-            >
-              <span className="relative inset-y-0 left-0 flex items-center">
-                <CheckBadgeIcon className='h-5 w-5' />
-              </span>
-              <span className='w-24'>Mark Rceived</span>
-            </button>
+            {row.payment_status == "pending payment" && <div className='mx-auto'>Awaiting payment</div>}
 
-            <button type='button'
-              onClick={() => { setOpen(true); setBookingToDelete(row) }}
-              className="mx-1 relative flex justify-center rounded-md bg-orange-600 py-2 px-3 text-sm font-semibold text-white 
-            hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-            >
-              <span className="relative inset-y-0 left-0 flex items-center">
-                <XMarkIcon className='h-5 w-5' />
-              </span>
-              <span className='w-26'>Not Rceived</span>
-            </button>
+            {(row.payment_status == "awaiting confirmation") || (row.payment_status == "payment confirmed") ?
+              <>
+                <button type='button'
+                  onClick={() => markPaymentAsReceived(row._id)}
+                  className="mx-1 relative flex justify-center rounded-md bg-blue-900 py-2 px-3 text-sm font-semibold text-white 
+                  hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  <span className="relative inset-y-0 left-0 flex items-center">
+                    <CheckBadgeIcon className='h-5 w-5' />
+                  </span>
+                  <span className='w-24'>Mark Received</span>
+                </button>
 
+                <button type='button'
+                  onClick={() => markPaymentAsNotReceived(row._id)}
+                  className="mx-1 relative flex justify-center rounded-md bg-orange-600 py-2 px-3 text-sm font-semibold text-white 
+                  hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                >
+                  <span className="relative inset-y-0 left-0 flex items-center">
+                    <XMarkIcon className='h-5 w-5' />
+                  </span>
+                  <span className='w-26'>Not Received</span>
+                </button>
+              </> : ''
+            }
 
           </div>
         </>

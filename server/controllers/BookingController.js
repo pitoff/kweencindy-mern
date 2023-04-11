@@ -134,7 +134,13 @@ module.exports.myBooking = async (req, res) => {
 }
 
 module.exports.allAcceptedAndConfirmedBooking = async (req, res) => {
-    res.send("Get all accepted and confirmed bookings")
+    try {
+        const bookings = await Booking.find({book_status:bookingStatus.BookingAccepted, payment_status:bookingStatus.PaymentConfirmed}).populate('category_id', 'category price').populate('user_id', 'fullname email')
+        return res.status(200).send(response.success('list of confirmed and accepted bookings', bookings))
+
+    } catch (error) {
+
+    }
 }
 
 module.exports.acceptBooking = async (req, res) => {
