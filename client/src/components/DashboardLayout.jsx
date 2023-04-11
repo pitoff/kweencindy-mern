@@ -76,42 +76,42 @@ const DashboardLayout = () => {
                       />
                     </div>
                     <div className="hidden md:block">
-                    {user.role == "admin" && 
-                      <div className="ml-10 flex items-baseline space-x-4">
-                        {navigation.map((item) => (
-                          <NavLink
-                            key={item.name}
-                            to={item.to}
-                            className={({ isActive }) => classNames(
-                              isActive
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                              'px-3 py-2 rounded-md text-sm font-medium'
-                            )}
-                          >
-                            {item.name}
-                          </NavLink>
-                        ))}
-                      </div>
-                    }
-                    {user.role == "default" && 
-                      <div className="ml-10 flex items-baseline space-x-4">
-                        {defaultUserNavigation.map((item) => (
-                          <NavLink
-                            key={item.name}
-                            to={item.to}
-                            className={({ isActive }) => classNames(
-                              isActive
-                                ? 'bg-gray-900 text-white'
-                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                              'px-3 py-2 rounded-md text-sm font-medium'
-                            )}
-                          >
-                            {item.name}
-                          </NavLink>
-                        ))}
-                      </div>
-                    }
+                      {user.role == "admin" &&
+                        <div className="ml-10 flex items-baseline space-x-4">
+                          {navigation.map((item) => (
+                            <NavLink
+                              key={item.name}
+                              to={item.to}
+                              className={({ isActive }) => classNames(
+                                isActive
+                                  ? 'bg-gray-900 text-white'
+                                  : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                'px-3 py-2 rounded-md text-sm font-medium'
+                              )}
+                            >
+                              {item.name}
+                            </NavLink>
+                          ))}
+                        </div>
+                      }
+                      {user.role == "default" &&
+                        <div className="ml-10 flex items-baseline space-x-4">
+                          {defaultUserNavigation.map((item) => (
+                            <NavLink
+                              key={item.name}
+                              to={item.to}
+                              className={({ isActive }) => classNames(
+                                isActive
+                                  ? 'bg-gray-900 text-white'
+                                  : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                'px-3 py-2 rounded-md text-sm font-medium'
+                              )}
+                            >
+                              {item.name}
+                            </NavLink>
+                          ))}
+                        </div>
+                      }
                     </div>
                   </div>
                   <div className="hidden md:block">
@@ -170,36 +170,36 @@ const DashboardLayout = () => {
 
               <Disclosure.Panel className="md:hidden">
                 {user.role == "admin" &&
-                <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
-                  {navigation.map((item) => (
-                    <NavLink
-                      key={item.name}
-                      to={item.to}
-                      className={({ isActive }) => classNames(
-                        isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block px-3 py-2 rounded-md text-base font-medium'
-                      )}
-                    >
-                      {item.name}
-                    </NavLink>
-                  ))}
-                </div>
+                  <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
+                    {navigation.map((item) => (
+                      <NavLink
+                        key={item.name}
+                        to={item.to}
+                        className={({ isActive }) => classNames(
+                          isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                          'block px-3 py-2 rounded-md text-base font-medium'
+                        )}
+                      >
+                        {item.name}
+                      </NavLink>
+                    ))}
+                  </div>
                 }
                 {user.role == "default" &&
-                <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
-                  {navigation.map((item) => (
-                    <NavLink
-                      key={item.name}
-                      to={item.to}
-                      className={({ isActive }) => classNames(
-                        isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block px-3 py-2 rounded-md text-base font-medium'
-                      )}
-                    >
-                      {item.name}
-                    </NavLink>
-                  ))}
-                </div>
+                  <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
+                    {navigation.map((item) => (
+                      <NavLink
+                        key={item.name}
+                        to={item.to}
+                        className={({ isActive }) => classNames(
+                          isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                          'block px-3 py-2 rounded-md text-base font-medium'
+                        )}
+                      >
+                        {item.name}
+                      </NavLink>
+                    ))}
+                  </div>
                 }
                 <div className="border-t border-gray-700 pt-4 pb-3">
                   <div className="flex items-center px-5">
@@ -244,14 +244,14 @@ const DashboardLayout = () => {
       {/* footer section */}
 
       <footer>
-          <div className="container-fluid flex fixed inset-x-0 bottom-0 bg-gray-500">
-            <div class="mx-auto m-3 text-center text-white">
+          <div className="container-fluid flex flex-row justify-between px-1 py-1 mx-auto mt-10 space-y-8 bg-gray-500">
+            <div className="mx-auto m-3 text-center text-white">
               Copyright &copy; 2022, All Rights Reserved
             </div>
           </div>
         </footer>
 
-        {/* end footer section */}
+      {/* end footer section */}
 
     </>
   )

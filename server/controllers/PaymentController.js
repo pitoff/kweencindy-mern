@@ -17,6 +17,19 @@ module.exports.markAsPaid = async(req, res) => {
     }
 }
 
+module.exports.markAsNotPaid = async(req, res) => {
+    const { bookingId } = req.params
+    if (!mongoose.Types.ObjectId.isValid(bookingId)) {
+        return res.status(400).send(response.failure('resource not found'))
+    }
+    try {
+        const booking = await Booking.findByIdAndUpdate(bookingId, {payment_status: bookingStatus.PendingPayment}, {new:true})
+        return res.status(200).send(response.success('Payment marked as not paid', booking))
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 module.exports.markPaymentAsReceived = async(req, res) => {
     const { bookingId } = req.params
     if (!mongoose.Types.ObjectId.isValid(bookingId)) {

@@ -1,60 +1,94 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import { PlusIcon } from "@heroicons/react/20/solid"
 import { useStateContext } from '../../Context/ContextProvider';
 import { CheckCircleIcon, ListBulletIcon } from '@heroicons/react/24/outline';
+import axiosInstance from '../../axios';
 
 const Booking = () => {
   const { currentUser } = useStateContext()
   const user = JSON.parse(currentUser)
+  const [bookings, setBookings] = useState([])
+
+  const confirmedBooking = async () => {
+    await axiosInstance.get(`/bookings/confirmed-booking`)
+      .then((res) => {
+        console.log("my booking", res.data.data)
+        setBookings(res.data.data)
+      }).catch((err) => {
+        console.log(err.response.data.message)
+      })
+  }
+
+  useEffect(() => {
+    confirmedBooking()
+  }, [])
 
   const columns = [
     {
       name: 'S/N',
-      selector: row => row.id,
-      sortable: true,
+      cell: (row, index) => (index + 1),
+      selector: row => row._id,
+      width: "65px"
     },
     {
-      name: 'REFERENCE_NO',
-      selector: row => row.ref,
+      name: 'REF NO.',
+      selector: row => row.ref_no,
       sortable: true,
+      width: "150px"
     },
     {
-      name: 'EMAIL',
-      selector: row => row.email,
+      name: 'DATE',
+      selector: row => row.book_date,
       sortable: true,
+      width: "150px"
+    },
+    {
+      name: 'CATEGORY',
+      selector: row => row.category_id.category,
+      sortable: true,
+      width: "150px"
     },
     {
       name: 'PRICE',
-      selector: row => row.price,
+      selector: row => row.category_id.price,
       sortable: true,
+      width: "100px"
     },
     {
-      name: 'ACTION',
-      selector: row => row.year,
+      name: 'BOOKING STATUS',
+      selector: row => row.book_status,
       sortable: true,
+      width: "150px"
+    },
+    {
+      name: 'PAYMENT STATUS',
+      selector: row => row.payment_status,
+      sortable: true,
+      width: "150px"
     },
   ];
 
-  const data = [
-    {
-      id: 1,
-      ref: 'BKC-1253',
-      email: 'jane@gmail.com',
-      price: '#30,000'
+  const customStyles = {
+    rows: {
+      style: {
+        minHeight: '72px', // override the row height
+      },
     },
-    {
-      id: 2,
-      ref: 'BKC-7341',
-      email: 'julie@gmail.com',
-      price: '#40,000'
+    headCells: {
+      style: {
+        paddingLeft: '8px', // override the cell padding for head cells
+        paddingRight: '8px',
+        fontSize: '14px'
+      },
     },
-  ]
-
-  const tableDatas = {
-    columns,
-    data,
+    cells: {
+      style: {
+        paddingLeft: '8px', // override the cell padding for data cells
+        paddingRight: '8px',
+      },
+    },
   };
 
   return (
@@ -128,8 +162,8 @@ const Booking = () => {
           fixedHeader
           columns={columns}
           // selectableRows
-          data={data}
-          // customStyles={customStyles}
+          data={bookings}
+          customStyles={customStyles}
           persistTableHead
           defaultSortField="id"
           defaultSortAsc={false}

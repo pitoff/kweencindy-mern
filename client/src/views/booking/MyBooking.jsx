@@ -4,7 +4,7 @@ import DataTable from 'react-data-table-component';
 import DataTableExtensions from "react-data-table-component-extensions";
 import axiosInstance from '../../axios';
 import { PlusIcon } from "@heroicons/react/20/solid"
-import { PencilSquareIcon, TrashIcon, ExclamationTriangleIcon, CreditCardIcon, CheckBadgeIcon } from '@heroicons/react/24/outline';
+import { PencilSquareIcon, TrashIcon, ExclamationTriangleIcon, CreditCardIcon, CheckBadgeIcon, XMarkIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { useStateContext } from '../../Context/ContextProvider';
 import { Dialog, Transition } from '@headlessui/react'
 import { toast } from "react-toastify";
@@ -42,6 +42,19 @@ const MyBooking = () => {
         await axiosInstance.put(`/payment/mark-paid/${id}`)
             .then((res) => {
                 console.log(res)
+                getMyBooking()
+                toast.success(res.data.message)
+            }).catch((err) => {
+                console.log(err)
+                toast.success(err.response.data.message)
+            })
+    }
+
+    const markBookingAsNotPaid = async (id) => {
+        await axiosInstance.put(`/payment/mark-not-paid/${id}`)
+            .then((res) => {
+                console.log(res)
+                getMyBooking()
                 toast.success(res.data.message)
             }).catch((err) => {
                 console.log(err)
@@ -84,55 +97,156 @@ const MyBooking = () => {
             sortable: true,
         },
         {
-            name: 'ACTIONS',
+            name: 'PAYMENT',
             selector: row => row.year,
-            width: "350px",
+            width: "240px",
             cell: (row) =>
                 <>
                     <div className="container flex flex-row">
-                        {row.book_status == "booking accepted" &&
-                            <button type='button'
-                                onClick={() => { markBookingAsPaid(row._id) }}
-                                className="mx-1 relative flex justify-center rounded-md bg-green-900 py-2 px-3 text-sm font-semibold text-white 
-                            hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                        {row.book_status == "booking accepted" && row.payment_status == "pending payment" &&
+                            <>
+                                <button type='button'
+                                    onClick={() => { markBookingAsPaid(row._id) }}
+                                    className="mx-1 relative flex justify-center rounded-md bg-green-900 py-2 px-3 text-sm font-semibold text-white 
+                                    hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                >
+                                    <span className="relative inset-y-0 left-0 flex items-center">
+                                        <CheckBadgeIcon className='h-5 w-5' />
+                                    </span>
+                                    <span className='w-20'>Mark Paid</span>
+                                </button>
+
+                                <Link to={`/make-payment/${row._id}`}
+                                    className="mx-1 relative flex justify-center rounded-md bg-blue-500 py-2 px-3 text-sm font-semibold text-white 
+                                    hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                >
+                                    <span className="relative inset-y-0 left-0 flex items-center">
+                                        <CreditCardIcon className='h-5 w-5 ' />
+                                    </span>
+                                    <span className='pl-1 w-7'>Pay</span>
+                                </Link>
+                            </>
+                        }
+                        {row.book_status == "booking accepted" && row.payment_status == "awaiting confirmation" &&
+                            <>
+                                <button type='button'
+                                    onClick={() => { markBookingAsNotPaid(row._id) }}
+                                    className="mx-1 relative flex justify-center rounded-md bg-orange-600 py-2 px-3 text-sm font-semibold text-white 
+                                    hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                >
+                                    <span className="relative inset-y-0 left-0 flex items-center">
+                                        <XMarkIcon className='h-5 w-5' />
+                                    </span>
+                                    <span>Mark Not Paid</span>
+                                </button>
+
+                                <Link to={`/make-payment/${row._id}`}
+                                    className="mx-1 relative flex justify-center rounded-md bg-blue-500 py-2 px-3 text-sm font-semibold text-white 
+                                    hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                >
+                                    <span className="relative inset-y-0 left-0 flex items-center">
+                                        <CreditCardIcon className='h-5 w-5 ' />
+                                    </span>
+                                    <span className='pl-1 w-7'>Pay</span>
+                                </Link>
+
+                            </>
+                        }
+                        {row.book_status == "booking accepted" && row.payment_status == "payment confirmed" && <div>{row.payment_status}</div>}
+
+                    </div>
+
+                </>
+
+        },
+        {
+            name: 'ACTIONS',
+            selector: row => row.year,
+            width: "120px",
+            cell: (row) =>
+                <>
+                    <div className="container flex flex-row">
+                        {row.book_status == "booking accepted" && row.payment_status == "pending payment" &&
+                            <>
+                                <Link to={`/booking/edit/${row._id}`}
+                                    className="mx-1 relative flex justify-center rounded-md bg-green-600 py-2 px-3 text-sm font-semibold text-white 
+                                    hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                >
+                                    <span className="relative inset-y-0 left-0 flex items-center">
+                                        <PencilSquareIcon className='h-5 w-5 ' />
+                                    </span>
+                                </Link>
+
+                                <button type='button'
+                                    onClick={() => { setOpen(true); setBookingToDelete(row) }}
+                                    className="mx-1 relative flex justify-center rounded-md bg-red-600 py-2 px-3 text-sm font-semibold text-white 
+                                hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                >
+                                    <span className="relative inset-y-0 left-0 flex items-center">
+                                        <TrashIcon className='h-5 w-5 ' />
+                                    </span>
+                                </button>
+                            </>
+                        }
+                        {row.book_status == "booking accepted" && row.payment_status == "awaiting confirmation" &&
+                            <>
+                                <Link to={`/booking/edit/${row._id}`}
+                                    className="mx-1 relative flex justify-center rounded-md bg-green-600 py-2 px-3 text-sm font-semibold text-white 
+                                    hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                >
+                                    <span className="relative inset-y-0 left-0 flex items-center">
+                                        <PencilSquareIcon className='h-5 w-5 ' />
+                                    </span>
+                                </Link>
+
+                                <button type='button'
+                                    onClick={() => { setOpen(true); setBookingToDelete(row) }}
+                                    className="mx-1 relative flex justify-center rounded-md bg-red-600 py-2 px-3 text-sm font-semibold text-white 
+                                    hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                >
+                                    <span className="relative inset-y-0 left-0 flex items-center">
+                                        <TrashIcon className='h-5 w-5 ' />
+                                    </span>
+                                </button>
+                            </>
+                        }
+                        {(row.book_status == "pending booking" || row.book_status == "booking declined") &&
+
+                            <>
+                                <Link to={`/booking/edit/${row._id}`}
+                                    className="mx-1 relative flex justify-center rounded-md bg-green-600 py-2 px-3 text-sm font-semibold text-white 
+                                    hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                >
+                                    <span className="relative inset-y-0 left-0 flex items-center">
+                                        <PencilSquareIcon className='h-5 w-5 ' />
+                                    </span>
+                                </Link>
+
+                                <button type='button'
+                                    onClick={() => { setOpen(true); setBookingToDelete(row) }}
+                                    className="mx-1 relative flex justify-center rounded-md bg-red-600 py-2 px-3 text-sm font-semibold text-white 
+                                    hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                                >
+                                    <span className="relative inset-y-0 left-0 flex items-center">
+                                        <TrashIcon className='h-5 w-5 ' />
+                                    </span>
+                                </button>
+                            </>
+
+                        }
+                        {row.book_status == "booking accepted" && row.payment_status == "payment confirmed" &&
+
+                            <Link to={`/booking/edit/${row._id}`}
+                                className="mx-1 relative flex justify-center rounded-md bg-blue-500 py-2 px-3 text-sm font-semibold text-white 
+                                hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                             >
                                 <span className="relative inset-y-0 left-0 flex items-center">
-                                    <CheckBadgeIcon className='h-5 w-5' />
+                                    <EyeIcon className='h-5 w-5 ' />
                                 </span>
-                                <span className='w-20'>Mark Paid</span>
-                            </button>
+                                <span className='pl-1 w-10'>View</span>
+                            </Link>
+
                         }
-
-
-                        <Link to={`/make-payment/${row._id}`}
-                            className="mx-1 relative flex justify-center rounded-md bg-blue-500 py-2 px-3 text-sm font-semibold text-white 
-                            hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                        >
-                            <span className="relative inset-y-0 left-0 flex items-center">
-                                <CreditCardIcon className='h-5 w-5 ' />
-                            </span>
-                            <span className='pl-1 w-7'>Pay</span>
-                        </Link>
-
-                        <Link to={`/booking/edit/${row._id}`}
-                            className="mx-1 relative flex justify-center rounded-md bg-green-600 py-2 px-3 text-sm font-semibold text-white 
-                            hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                        >
-                            <span className="relative inset-y-0 left-0 flex items-center">
-                                <PencilSquareIcon className='h-5 w-5 ' />
-                            </span>
-                        </Link>
-
-                        <button type='button'
-                            onClick={() => { setOpen(true); setBookingToDelete(row) }}
-                            className="mx-1 relative flex justify-center rounded-md bg-red-600 py-2 px-3 text-sm font-semibold text-white 
-                            hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                        >
-                            <span className="relative inset-y-0 left-0 flex items-center">
-                                <TrashIcon className='h-5 w-5 ' />
-                            </span>
-                        </button>
-
 
                     </div>
 
