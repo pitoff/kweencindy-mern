@@ -24,6 +24,7 @@ const Signup = () => {
             navigate('/dashboard')
         }).catch((err) => {
             console.log(err)
+            //this is a console.log
             toast.error(err.response.data.message)
         })
     }
