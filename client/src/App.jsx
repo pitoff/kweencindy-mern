@@ -20,6 +20,7 @@ import Gallery from './views/gallery/Gallery';
 import CreateImage from './views/gallery/CreateImage';
 import BookingAwaitingAction from './views/booking/BookingAwaitingAction';
 import MakePayment from './views/payment/MakePayment';
+import Footer from './components/Footer';
 
 function App() {
 
@@ -61,6 +62,7 @@ function App() {
         <Route path='*' element={<MissingPage />} />
 
       </Routes>
+      {/* <Footer/> */}
     </main>
   )
 }

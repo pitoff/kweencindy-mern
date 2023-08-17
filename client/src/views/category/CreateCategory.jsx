@@ -6,7 +6,7 @@ import axiosInstance from '../../axios';
 import { ListBulletIcon, UserCircleIcon, PhotoIcon } from "@heroicons/react/20/solid"
 
 const CreateCategory = () => {
-    const [category, setCategory] = useState({name: '', description: '', price: ''})
+    const [category, setCategory] = useState({category: '', description: '', price: ''})
     const navigate = useNavigate()
     const {categoryId} = useParams()
     // console.log("cat Id", categoryId)
@@ -43,7 +43,7 @@ const CreateCategory = () => {
         if(categoryId){
             axiosInstance.get(`/category/${categoryId}`)
             .then(({data}) => {
-                setCategory({name:data.data.category, description:data.data.description, price:data.data.price})
+                setCategory({category:data.data.category, description:data.data.description, price:data.data.price})
             }).catch((err) => {
                 console.log(err)
                 toast.error(err.response.data.message)
@@ -90,17 +90,15 @@ const CreateCategory = () => {
 
                             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <div className="sm:col-span-3">
-                                    <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
-                                        Name
+                                    <label htmlFor="category" className="block text-sm font-medium leading-6 text-gray-900">
+                                        Category
                                     </label>
                                     <div className="mt-2">
                                         <input
                                             type="text"
-                                            name="first-name"
                                             required
-                                            value={category.name}
-                                            onChange={(e) => {setCategory({...category, name:e.target.value})}}
-                                            id="first-name"
+                                            value={category.category}
+                                            onChange={(e) => {setCategory({...category, category:e.target.value})}}
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
                                     </div>

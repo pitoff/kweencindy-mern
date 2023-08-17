@@ -10,12 +10,15 @@ const createJWT = id => {
 }
 
 module.exports.signUp = async(req, res) => {
-    const { firstname, lastname, email, phone, password } = req.body
-    if(!firstname || !lastname || !email || !phone || !password){
+    const { firstname, lastname, email, phone, password, confirmPassword } = req.body
+    if(!firstname || !lastname || !email || !phone || !password || !confirmPassword){
        return res.status(400).send(response.failure('Please check your required fields!'))
     }
 
     try {
+        if(password !== confirmPassword){
+            return res.status(400).send(response.failure(`Password does not match`))
+        }
         const user = await User.create({fullname:lastname + ' ' + firstname, email, phone, password})
         const token = createJWT(user._id)
         //send token to cookie response

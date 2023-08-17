@@ -13,9 +13,9 @@ const Signup = () => {
 
     const saveUser = async(e) => {
         e.preventDefault()
-        if(userDetails.password !== userDetails.confirmPassword){
-            toast.error("Please password Incorrect")
-        }
+        // if(userDetails.password !== userDetails.confirmPassword){
+        //     return toast.error("Password does not match")
+        // }
         await axiosInstance.post('/sign-up', userDetails)
         .then((res) => {
             toast.success(res.data.message)
