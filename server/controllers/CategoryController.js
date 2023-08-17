@@ -15,13 +15,13 @@ module.exports.categories = async(req, res) => {
 }
 
 module.exports.create = async(req, res) => {
-    const { name, description, price } = req.body
-    if(!name || !description || !price){
+    const { category, description, price } = req.body
+    if(!category || !description || !price){
         return res.status(400).send(response.failure('Please check required field'))
     }
     //validate for wrong price format
     try {
-        const storeCategory = await Category.create({category:name, description, price})
+        const storeCategory = await Category.create({category, description, price})
         return res.status(201).send(response.success('category created successfully', storeCategory))
     } catch (error) {
         console.log(error)
