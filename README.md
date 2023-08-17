@@ -1,2 +1,2 @@
 # kweencindy-mern
-# This is a make up booking app, built with MERN stack
+# This is a booking application, built with MERN stack
